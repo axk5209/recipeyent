@@ -79,7 +79,7 @@ export default function SignUp() {
 		}
 	}
 
-
+	//Redirects to login page if successful, otherwise displays error
 	async function onSubmit(event) {
 		event.preventDefault()
 		if (!(username && firstName && lastName && email && password))
@@ -95,7 +95,7 @@ export default function SignUp() {
 			catch (error) {
 				setErrorMessage('This username has been taken. Please enter another username.')
 			}
-		}
+		} 
 	}
 
 	return (
