@@ -82,12 +82,19 @@ export default function SignUp() {
 
 	async function onSubmit(event) {
 		event.preventDefault()
-		const userInfo = await usersService.create({ username, firstName, lastName, email, password })
-		if (userInfo) {
-			history.push("/login")
+		if (!(username && firstName && lastName && email && password))
+		{
+			setErrorMessage('Please fill all the required fields.')
 		}
-		else {
-			setErrorMessage('This username has been taken. Please enter another username.')
+		else 
+		{
+			try {
+				const userInfo = await usersService.create({ username, firstName, lastName, email, password })
+				history.push("/login")
+			}
+			catch (error) {
+				setErrorMessage('This username has been taken. Please enter another username.')
+			}
 		}
 	}
 
