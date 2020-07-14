@@ -13,11 +13,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Alert from '@material-ui/lab/alert';
 import {
-	Typography
+	Typography, CssBaseline
 } from '@material-ui/core'
-
-
-
+import { GoogleLogin } from 'react-google-login';
+import GoogleButton from 'react-google-button'
+import GuestHeader from "./GuestHeader"
 const useStyles = makeStyles(theme => ({
 	paper: {
 		marginTop: theme.spacing(8),
@@ -46,6 +46,10 @@ const Login = function (props) {
 	const [password, setPassword] = useState("")
 	const [errorMessage, setErrorMessage] = useState(null)
 
+	const responseGoogle = (response) => {
+		console.log(response);
+	}
+
 	function onChange(event) {
 		if (event.target.name === "username") {
 			setUsername(event.target.value)
@@ -70,7 +74,20 @@ const Login = function (props) {
 		setUsername('')
 		setPassword('')
 	}
+
+	const googleButtonStyle = {
+		width: "inherit",
+		display: "inherit",
+		alignItems: "inherit",
+		justifyContent: "inherit"
+	}
 	return (
+		<React.Fragment>
+		<CssBaseline></CssBaseline>
+		
+		<GuestHeader> 
+			<Button color="inherit" href="/home" variant="contained" color = "tertiary" className={classes.menuButton}>Home</Button>
+		</GuestHeader>
 		<Container component="main" maxWidth="xs">
 			<div className={classes.paper}>
 				<Avatar className={classes.avatar}>
@@ -118,7 +135,14 @@ const Login = function (props) {
 						onClick={onSubmit}
 					>
 						Login
-          </Button>
+          			</Button>
+					{/*<GoogleLogin style = {googleButtonStyle}
+						clientId="658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com"
+						onSuccess={responseGoogle}
+						isSignedIn={true}
+					/>
+					<br></br>
+					<br></br>*/}
 					<Grid container>
 						<Grid item>
 							<Link href="/signup" variant="body2">
@@ -129,6 +153,7 @@ const Login = function (props) {
 				</form>
 			</div>
 		</Container>
+		</React.Fragment>
 
 	)
 }

@@ -15,6 +15,8 @@ import Alert from '@material-ui/lab/alert';
 import {
 	useHistory
 } from 'react-router-dom'
+import GuestHeader from "./GuestHeader"
+
 const useStyles = makeStyles((theme) => ({
 	paper: {
 		marginTop: theme.spacing(8),
@@ -82,12 +84,10 @@ export default function SignUp() {
 	//Redirects to login page if successful, otherwise displays error
 	async function onSubmit(event) {
 		event.preventDefault()
-		if (!(username && firstName && lastName && email && password))
-		{
+		if (!(username && firstName && lastName && email && password)) {
 			setErrorMessage('Please fill all the required fields.')
 		}
-		else 
-		{
+		else {
 			try {
 				const userInfo = await usersService.create({ username, firstName, lastName, email, password })
 				history.push("/login")
@@ -95,108 +95,114 @@ export default function SignUp() {
 			catch (error) {
 				setErrorMessage('This username has been taken. Please enter another username.')
 			}
-		} 
+		}
 	}
 
 	return (
-		<Container component="main" maxWidth="xs">
+		<React.Fragment>
 			<CssBaseline />
-			<div className={classes.paper}>
-				<Avatar className={classes.avatar}>
-					<LockOutlinedIcon />
-				</Avatar>
-				<br></br>
-				<Typography variant="h3">Sign Up Page</Typography>
-				<br></br>
-				{errorMessage && <Alert severity="error">{errorMessage}</Alert>}
-				<form className={classes.form} onSubmit={onSubmit} noValidate>
-					<Grid container spacing={2}>
-						<Grid item xs={12} sm={6}>
-							<TextField
-								autoComplete="fname"
-								name="firstName"
-								variant="outlined"
-								required
-								fullWidth
-								id="firstName"
-								label="First Name"
-								autoFocus
-								onChange={onChange}
-								value={firstName}
-							/>
+			<GuestHeader>
+				<Button color="inherit" href="/home" variant="contained" color = "tertiary" className={classes.menuButton}>Home</Button>
+			</GuestHeader>
+			<Container component="main" maxWidth="xs">
+
+				<div className={classes.paper}>
+					<Avatar className={classes.avatar}>
+						<LockOutlinedIcon />
+					</Avatar>
+					<br></br>
+					<Typography variant="h3">Sign Up Page</Typography>
+					<br></br>
+					{errorMessage && <Alert severity="error">{errorMessage}</Alert>}
+					<form className={classes.form} onSubmit={onSubmit} noValidate>
+						<Grid container spacing={2}>
+							<Grid item xs={12} sm={6}>
+								<TextField
+									autoComplete="fname"
+									name="firstName"
+									variant="outlined"
+									required
+									fullWidth
+									id="firstName"
+									label="First Name"
+									autoFocus
+									onChange={onChange}
+									value={firstName}
+								/>
+							</Grid>
+							<Grid item xs={12} sm={6}>
+								<TextField
+									variant="outlined"
+									required
+									fullWidth
+									id="lastName"
+									label="Last Name"
+									name="lastName"
+									autoComplete="lname"
+									onChange={onChange}
+									value={lastName}
+								/>
+							</Grid>
+							<Grid item xs={12}>
+								<TextField
+									variant="outlined"
+									required
+									fullWidth
+									id="username"
+									label="Username"
+									name="username"
+									autoComplete="username"
+									onChange={onChange}
+									value={username}
+								/>
+							</Grid>
+							<Grid item xs={12}>
+								<TextField
+									variant="outlined"
+									required
+									fullWidth
+									name="password"
+									label="Password"
+									type="password"
+									id="password"
+									autoComplete="current-password"
+									onChange={onChange}
+									value={password}
+								/>
+							</Grid>
+							<Grid item xs={12}>
+								<TextField
+									variant="outlined"
+									required
+									fullWidth
+									id="email"
+									label="Email Address"
+									name="email"
+									autoComplete="email"
+									onChange={onChange}
+									value={email}
+								/>
+							</Grid>
 						</Grid>
-						<Grid item xs={12} sm={6}>
-							<TextField
-								variant="outlined"
-								required
-								fullWidth
-								id="lastName"
-								label="Last Name"
-								name="lastName"
-								autoComplete="lname"
-								onChange={onChange}
-								value={lastName}
-							/>
-						</Grid>
-						<Grid item xs={12}>
-							<TextField
-								variant="outlined"
-								required
-								fullWidth
-								id="username"
-								label="Username"
-								name="username"
-								autoComplete="username"
-								onChange={onChange}
-								value={username}
-							/>
-						</Grid>
-						<Grid item xs={12}>
-							<TextField
-								variant="outlined"
-								required
-								fullWidth
-								name="password"
-								label="Password"
-								type="password"
-								id="password"
-								autoComplete="current-password"
-								onChange={onChange}
-								value={password}
-							/>
-						</Grid>
-						<Grid item xs={12}>
-							<TextField
-								variant="outlined"
-								required
-								fullWidth
-								id="email"
-								label="Email Address"
-								name="email"
-								autoComplete="email"
-								onChange={onChange}
-								value={email}
-							/>
-						</Grid>
-					</Grid>
-					<Button
-						type="submit"
-						fullWidth
-						variant="contained"
-						color="primary"
-						className={classes.submit}
-					>
-						Sign Up
+						<Button
+							type="submit"
+							fullWidth
+							variant="contained"
+							color="primary"
+							className={classes.submit}
+						>
+							Sign Up
           </Button>
-					<Grid container justify="flex-end">
-						<Grid item>
-							<Link href="/login" variant="body2">
-								Already have an account? Login Here
+						<Grid container justify="flex-end">
+							<Grid item>
+								<Link href="/login" variant="body2">
+									Already have an account? Login Here
               </Link>
+							</Grid>
 						</Grid>
-					</Grid>
-				</form>
-			</div>
-		</Container>
+					</form>
+				</div>
+			</Container>
+		</React.Fragment>
 	);
 }

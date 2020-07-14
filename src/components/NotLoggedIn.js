@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import Login from './Login'
 import SignUp from './SignUp'
-
+import LandingPage from './LandingPage'
 //import blogService from './services/blogs'
 
 import {
@@ -13,12 +13,15 @@ const NotLoggedIn = () => {
 
 	return (
 		<Switch>
-			<Redirect exact from="/" to="/login" />
+			<Redirect exact from="/" to="/home" />
 			<Route path="/login">
 				<Login />
 			</Route>
 			<Route path="/signup">
 				<SignUp />
+			</Route>
+			<Route path="/home">
+				<LandingPage />
 			</Route>
 			{/*<Route path="/blogs">
 				<Bloglist />
