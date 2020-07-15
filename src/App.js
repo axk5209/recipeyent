@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react'
-//import blogService from './services/blogs'
+//import recipeService from './services/recipes'
 import { useDispatch, useSelector } from 'react-redux'
-import { setUserAction } from "./reducers/user"
+import { setCurrentUserAction } from "./reducers/currentUser"
 import MainDisplay from "./components/MainDisplay"
 
 import {
 	BrowserRouter as Router,
 } from "react-router-dom"
 import NotLoggedIn from './components/NotLoggedIn'
+import { initializeRecipesAction } from './reducers/recipes'
+import { initializeUsersAction } from './reducers/users'
 
 
 const App = () => {
@@ -15,21 +17,27 @@ const App = () => {
 	const dispatch = useDispatch()
 	const user = useSelector(state => {
 		//console.log("Change detected")
-		//console.log(state.user)
+		//console.log(state)
 		//return state.user
-		return state
+		return state.currentUser
 	})
 
 
-	useEffect(() => { //when page first loads
-		const currentUserJSON = window.localStorage.getItem('currentUser')
-		const currentUser = JSON.parse(currentUserJSON)
-		if (currentUser !== null) {
-			dispatch(setUserAction(currentUser))
-			//blogService.setToken(currentUser.token)
+	useEffect(() => {
+		async function initializeEverything()
+		{
+			const currentUserJSON = window.localStorage.getItem('currentUser')
+			const currentUser = JSON.parse(currentUserJSON)
+			if (currentUser !== null) {
+				dispatch(setCurrentUserAction(currentUser))
+				//recipeService.setToken(currentUser.token)
+			}
+			await dispatch(initializeRecipesAction())
+			await dispatch(initializeUsersAction())
 		}
+		initializeEverything()
 		// eslint-disable-next-line
-	}, [])
+	}, [])//when page first loads
 
 
 

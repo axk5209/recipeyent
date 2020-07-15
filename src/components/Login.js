@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import { setUserAction } from "../reducers/user"
+import { setCurrentUserAction } from "../reducers/currentUser"
 import { useDispatch } from 'react-redux'
 import loginService from "../services/logins"
-//import blogService from "../services/blogs"
+//import recipeService from "../services/recipes"
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -46,9 +46,6 @@ const Login = function (props) {
 	const [password, setPassword] = useState("")
 	const [errorMessage, setErrorMessage] = useState(null)
 
-	const responseGoogle = (response) => {
-		console.log(response);
-	}
 
 	function onChange(event) {
 		if (event.target.name === "username") {
@@ -64,8 +61,8 @@ const Login = function (props) {
 		const user = await loginService.login({ username: username, password: password }) //will be null if login doesn't happen
 		if (user) //newUser is not null (login worked correctly)
 		{
-			dispatch(setUserAction(user))
-			//blogService.setToken(user.token)
+			dispatch(setCurrentUserAction(user))
+			//recipeService.setToken(user.token)
 			window.localStorage.setItem("currentUser", JSON.stringify(user))
 		}
 		else {
@@ -86,7 +83,7 @@ const Login = function (props) {
 		<CssBaseline></CssBaseline>
 		
 		<GuestHeader> 
-			<Button color="inherit" href="/home" variant="contained" color = "tertiary" className={classes.menuButton}>Home</Button>
+			<Button href="/home" variant="contained" className={classes.menuButton}>Home</Button>
 		</GuestHeader>
 		<Container component="main" maxWidth="xs">
 			<div className={classes.paper}>

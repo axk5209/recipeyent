@@ -1,0 +1,47 @@
+import axios from 'axios'
+const baseUrl = '/api/recipes'
+
+let token = null
+
+const setToken = newToken => {
+	token = `bearer ${newToken}`
+}
+
+const getAll = async () => {
+	//console.log("Recipes getting called.")
+	const response = await axios.get(baseUrl)
+	//console.log("After call:")
+	//console.log(response)
+	return response.data
+}
+
+const create = async (newRecipe) => {
+	const config = {
+		headers: { Authorization: token },
+	}
+	try {
+		const response = await axios.post(baseUrl, newRecipe, config) //third parameter contains request header
+		return response.data
+	}
+	catch (error)
+	{
+		return null
+	}
+}
+
+const update = async (newRecipe) => {
+	try {
+		//console.log("update called")
+		//console.log(newRecipe)
+		const response = await axios.put(`${baseUrl}/${newRecipe.id}`, newRecipe) 
+		return response.data
+	}
+	catch (error)
+	{
+		//console.log(error)
+		return null
+	}
+}
+
+
+export default {getAll, create, setToken, update}

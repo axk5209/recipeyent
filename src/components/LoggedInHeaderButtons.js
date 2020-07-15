@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-export default function HomeHeaderButtons() {
+export default function LoggedInHeaderButtons() {
 	const classes = useStyles();
 	return (
 		<div>
@@ -24,8 +24,7 @@ export default function HomeHeaderButtons() {
 				<MenuItem>Sign Up</MenuItem>
 			</ButtonAppBarCollapse>
 			<div>
-				<Button href="/login" variant="contained"  className={classes.buttonBar}>Login</Button>
-				<Button href="/signup" variant="contained" className={classes.buttonBar}>Sign up</Button>
+				<Button href="/login" variant="contained"  className={classes.buttonBar}>Main</Button>
 			</div>
 		</div>
 	)

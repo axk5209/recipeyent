@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import Login from './Login'
 import SignUp from './SignUp'
 import LandingPage from './LandingPage'
-//import blogService from './services/blogs'
+//import recipeService from './services/recipes'
 
 import {
 	Switch, Route, Redirect
@@ -23,7 +23,7 @@ const NotLoggedIn = () => {
 			<Route path="/home">
 				<LandingPage />
 			</Route>
-			{/*<Route path="/blogs">
+			{/*<Route path="/recipes">
 				<Bloglist />
 			</Route>
 			<Route path="/users/:id">

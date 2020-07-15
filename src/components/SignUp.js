@@ -102,7 +102,7 @@ export default function SignUp() {
 		<React.Fragment>
 			<CssBaseline />
 			<GuestHeader>
-				<Button color="inherit" href="/home" variant="contained" color = "tertiary" className={classes.menuButton}>Home</Button>
+				<Button href="/home" variant="contained" className={classes.menuButton}>Home</Button>
 			</GuestHeader>
 			<Container component="main" maxWidth="xs">
 

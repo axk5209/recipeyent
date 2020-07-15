@@ -69,8 +69,8 @@ const MainDisplay = () => {
 			<br></br>
 			<Paper square elevation={0} align = "center">
 				<br></br>
-				<Typography variant = "h4" align = "center" className = {classes.subheading}>Top-Rated Users</Typography>
-				<Box mx = {8} my = {4}> 
+				<Typography variant = "h4" align = "center" className = {classes.subheading}>Top-Rated Recipes</Typography>
+				<Box mx = {6} my = {4}> 
 					<Grid container align = "center" spacing = {6} justify = "center">
 						<Grid item xs = {12} md = {6} lg = {3}>
 							<RecipeCard />
@@ -86,7 +86,7 @@ const MainDisplay = () => {
 						</Grid>
 					</Grid>
 				</Box>
-				<Button size = "large" align = "center" variant = "outlined">View More</Button>
+				<Button size = "large" align = "center" variant = "outlined" >View More</Button>
 				<br></br>
 				<br></br>
 			</Paper>

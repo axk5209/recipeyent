@@ -1,4 +1,4 @@
-export const setUserAction = function (user) //action creator
+export const setCurrentUserAction = function (user) //action creator
 {
 	return async dispatch => {
 		dispatch({
