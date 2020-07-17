@@ -1,31 +1,31 @@
 import React, { useEffect } from 'react'
 import Login from './Login'
 import SignUp from './SignUp'
-import LandingPage from './LandingPage'
+import MainDisplay from './MainDisplay'
 import RecipePage from './RecipePage'
+
+//import recipeService from './services/recipes'
 
 import {
 	Switch, Route, Redirect
 } from "react-router-dom"
-const NotLoggedIn = () => {
+import Dashboard from './Dashboard'
+const LoggedIn = () => {
 
 
 
 	return (
 		<Switch>
-			<Redirect exact from="/" to="/home" />
-			<Route path="/login">
-				<Login />
+			<Route path="/dashboard">
+				<Dashboard />
 			</Route>
-			<Route path="/signup">
-				<SignUp />
-			</Route>
-			<Route path="/home">
-				<LandingPage />
+			<Route path="/main">
+				<MainDisplay />
 			</Route>
 			<Route path="/recipes/:id">
 				<RecipePage />
 			</Route>
+			<Redirect from="/" to="/main" />
 			{/*<Route path="/recipes">
 				<Bloglist />
 			</Route>
@@ -39,4 +39,4 @@ const NotLoggedIn = () => {
 	)
 }
 
-export default NotLoggedIn
+export default LoggedIn

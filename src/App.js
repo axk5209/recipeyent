@@ -3,6 +3,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setCurrentUserAction } from "./reducers/currentUser"
 import MainDisplay from "./components/MainDisplay"
+import LoggedIn from "./components/LoggedIn"
 
 import {
 	BrowserRouter as Router,
@@ -44,7 +45,7 @@ const App = () => {
 	return (
 		<Router>
 			{!user && <NotLoggedIn />} 
-			{user && <MainDisplay />} {/*No matter what is put after localhost:3000, page is directed to login page because there are no routers for the rest of the url*/}
+			{user && <LoggedIn />} {/*No matter what is put after localhost:3000, page is directed to login page because there are no routers for the rest of the url*/}
 		</Router>
 	)
 }

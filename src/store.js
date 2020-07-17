@@ -6,7 +6,7 @@ import recipesReducer from './reducers/recipes'
 import usersReducer from './reducers/users'
 
 import thunk from 'redux-thunk'
-const reducer = combineReducers({recipes: recipesReducer, currentUser: currentUserReducer, usersReducer: usersReducer})
+const reducer = combineReducers({recipes: recipesReducer, currentUser: currentUserReducer, users: usersReducer})
 //const reducer = combineReducers({users: usersReducer, currentUser: currentUserReducer})
 //const reducer = userReducer
 const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)))
