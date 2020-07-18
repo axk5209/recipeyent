@@ -5,7 +5,9 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import Button from "@material-ui/core/Button";
-
+import {
+	Link
+} from "react-router-dom"
 var chefHat = require('./chefHat.jpg')
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -54,7 +56,7 @@ export default function ComplexGrid(props) {
 					</Grid>
 					<br></br>
 					<Grid item >
-						<Button variant="outlined" size="small">
+						<Button variant="outlined" size="small" component = {Link} to = {`/users/${props.id}`}>
 							<Typography variant="body2">
 								View Profile
 							</Typography>

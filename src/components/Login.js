@@ -6,7 +6,7 @@ import loginService from "../services/logins"
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
+import LinkTag from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
@@ -18,6 +18,10 @@ import {
 import { GoogleLogin } from 'react-google-login';
 import GoogleButton from 'react-google-button'
 import GuestHeader from "./GuestHeader"
+import recipeService from '../services/recipes';
+import {
+	Link as LinkRouter
+} from "react-router-dom"
 const useStyles = makeStyles(theme => ({
 	paper: {
 		marginTop: theme.spacing(8),
@@ -62,7 +66,7 @@ const Login = function (props) {
 		if (user) //newUser is not null (login worked correctly)
 		{
 			dispatch(setCurrentUserAction(user))
-			//recipeService.setToken(user.token)
+			recipeService.setToken(user.token)
 			window.localStorage.setItem("currentUser", JSON.stringify(user))
 		}
 		else {
@@ -83,7 +87,7 @@ const Login = function (props) {
 		<CssBaseline></CssBaseline>
 		
 		<GuestHeader> 
-			<Button href="/home" variant="contained" className={classes.menuButton}>Home</Button>
+			<Button component={LinkRouter} to={"/home"} variant="contained" className={classes.menuButton}>Home</Button>
 		</GuestHeader>
 		<Container component="main" maxWidth="xs">
 			<div className={classes.paper}>
@@ -142,9 +146,9 @@ const Login = function (props) {
 					<br></br>*/}
 					<Grid container>
 						<Grid item>
-							<Link href="/signup" variant="body2">
+							<LinkTag component={LinkRouter} to="/signup" variant="body2">
 								{"Don't have an account? Sign Up Here"}
-							</Link>
+							</LinkTag>
 						</Grid>
 					</Grid>
 				</form>

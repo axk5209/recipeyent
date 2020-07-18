@@ -10,6 +10,11 @@ const create = async (userInfo) => {
 	const response = await axios.post(baseUrl, userInfo)
 	return response.data
 }
+const update = async (userInfo) => {
+	//console.log(userInfo)
+	const response = await axios.put(`${baseUrl}/${userInfo.id}`, userInfo)
+	return response.data
+}
 
 
-export default { getAll, create}
+export default { getAll, create, update}

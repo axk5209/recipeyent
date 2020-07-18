@@ -7,6 +7,7 @@ import RecipePage from './RecipePage'
 import {
 	Switch, Route, Redirect
 } from "react-router-dom"
+import UserPage from './UserPage'
 const NotLoggedIn = () => {
 
 
@@ -25,6 +26,9 @@ const NotLoggedIn = () => {
 			</Route>
 			<Route path="/recipes/:id">
 				<RecipePage />
+			</Route>
+			<Route path="/users/:id">
+				<UserPage />
 			</Route>
 			{/*<Route path="/recipes">
 				<Bloglist />

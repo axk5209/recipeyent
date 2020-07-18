@@ -6,7 +6,9 @@ import Typography from "@material-ui/core/Typography";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import Button from "@material-ui/core/Button";
 import MainListUserItem from "./MainListUserItem"
+
 var chefHat = require('./chefHat.jpg')
+
 const useStyles = makeStyles(theme => ({
 	root: {
 		flexGrow: 1
@@ -30,11 +32,11 @@ const useStyles = makeStyles(theme => ({
 
 export default function MainUsersList(props) {
 	const classes = useStyles();
-	console.log(props)
+	//console.log(props)
 	const displayItems = props.displayItems.map(user => {
 		const name = user.firstName + " " + user.lastName
 		const tags = user.tags.length > 0 ? user.tags.sort((a, b) => a.votes > b.votes).slice(0, 5).map(item => item.title).join(", ") : "No Tags Yet. Give the first!"
-		return <div key = {user.id}><MainListUserItem name = {name} tags = {tags}/><br></br></div>
+		return <div key = {user.id}><MainListUserItem name = {name} tags = {tags} id = {user.id}/><br></br></div>
 	})
 	return (
 		<div className={classes.root}>

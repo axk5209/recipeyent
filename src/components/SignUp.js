@@ -3,7 +3,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
+import LinkTag from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
@@ -16,7 +16,9 @@ import {
 	useHistory
 } from 'react-router-dom'
 import GuestHeader from "./GuestHeader"
-
+import {
+	Link as LinkRouter
+} from "react-router-dom"
 const useStyles = makeStyles((theme) => ({
 	paper: {
 		marginTop: theme.spacing(8),
@@ -102,7 +104,7 @@ export default function SignUp() {
 		<React.Fragment>
 			<CssBaseline />
 			<GuestHeader>
-				<Button href="/home" variant="contained" className={classes.menuButton}>Home</Button>
+				<Button component={LinkRouter} to={"/home"} variant="contained" className={classes.menuButton}>Home</Button>
 			</GuestHeader>
 			<Container component="main" maxWidth="xs">
 
@@ -195,9 +197,9 @@ export default function SignUp() {
           </Button>
 						<Grid container justify="flex-end">
 							<Grid item>
-								<Link href="/login" variant="body2">
+								<LinkTag  component={LinkRouter} to="/login" variant="body2">
 									Already have an account? Login Here
-              </Link>
+              					</LinkTag>
 							</Grid>
 						</Grid>
 					</form>

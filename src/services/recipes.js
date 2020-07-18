@@ -4,6 +4,7 @@ const baseUrl = '/api/recipes'
 let token = null
 
 const setToken = newToken => {
+	//console.log("token set to:" + newToken)
 	token = `bearer ${newToken}`
 }
 
@@ -30,10 +31,15 @@ const create = async (newRecipe) => {
 }
 
 const update = async (newRecipe) => {
+	//console.log(newRecipe)
+	//console.log(token)
+	const config = {
+		headers: { Authorization: token },
+	}
 	try {
 		//console.log("update called")
 		//console.log(newRecipe)
-		const response = await axios.put(`${baseUrl}/${newRecipe.id}`, newRecipe) 
+		const response = await axios.put(`${baseUrl}/${newRecipe.id}`, newRecipe, config) 
 		return response.data
 	}
 	catch (error)

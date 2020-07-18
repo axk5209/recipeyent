@@ -3,6 +3,9 @@ import { Button, makeStyles, MenuItem } from '@material-ui/core'
 import ButtonAppBarCollapse from "./HomeHeaderButtonsCollapsed"
 import { useDispatch, useSelector } from 'react-redux'
 import { setCurrentUserAction } from "../reducers/currentUser"
+import {
+	Link
+} from "react-router-dom"
 const useStyles = makeStyles(theme => ({
 	root: {
 		position: "absolute",
@@ -34,8 +37,8 @@ export default function LoggedInHeaderButtons(props) {
 				<MenuItem>Logout</MenuItem>
 			</ButtonAppBarCollapse>
 			<div>
-				<Button href={`/${otherView}`} variant="contained"  className={classes.buttonBar}>{otherView}</Button>
-				<Button href="/login" variant="contained"  className={classes.buttonBar} onClick = {onLogout}>Logout</Button>
+				<Button component = {Link} to={`/${otherView}`} variant="contained"  className={classes.buttonBar}>{otherView}</Button>
+				<Button component = {Link} to="/login" variant="contained"  className={classes.buttonBar} onClick = {onLogout}>Logout</Button>
 			</div>
 		</div>
 	)

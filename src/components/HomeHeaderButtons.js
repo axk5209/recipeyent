@@ -1,6 +1,9 @@
 import React from "react"
 import { Button, makeStyles, MenuItem } from '@material-ui/core'
 import ButtonAppBarCollapse from "./HomeHeaderButtonsCollapsed"
+import {
+	Link
+} from "react-router-dom"
 const useStyles = makeStyles(theme => ({
 	root: {
 		position: "absolute",
@@ -24,8 +27,8 @@ export default function HomeHeaderButtons() {
 				<MenuItem>Sign Up</MenuItem>
 			</ButtonAppBarCollapse>
 			<div>
-				<Button href="/login" variant="contained"  className={classes.buttonBar}>Login</Button>
-				<Button href="/signup" variant="contained" className={classes.buttonBar}>Sign up</Button>
+				<Button component = {Link} to="/login" variant="contained"  className={classes.buttonBar}>Login</Button>
+				<Button component = {Link} to="/signup" variant="contained" className={classes.buttonBar}>Sign up</Button>
 			</div>
 		</div>
 	)

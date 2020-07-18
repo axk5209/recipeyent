@@ -11,6 +11,7 @@ import {
 import NotLoggedIn from './components/NotLoggedIn'
 import { initializeRecipesAction } from './reducers/recipes'
 import { initializeUsersAction } from './reducers/users'
+import recipeService from './services/recipes';
 
 
 const App = () => {
@@ -31,7 +32,7 @@ const App = () => {
 			const currentUser = JSON.parse(currentUserJSON)
 			if (currentUser !== null) {
 				dispatch(setCurrentUserAction(currentUser))
-				//recipeService.setToken(currentUser.token)
+				recipeService.setToken(currentUser.token)
 			}
 			await dispatch(initializeRecipesAction())
 			await dispatch(initializeUsersAction())

@@ -59,7 +59,7 @@ const Dashboard = () => {
 			<Container align = "center">
 				{currentUser.createdRecipes && <CreatedRecipes createdRecipes = {currentUser.createdRecipes}/>}
 			</Container>
-			{/*Pagination-based view of "your blogs" (for now, just display random 5)*/}
+			{/*Pagination-based view of "your recipes" (for now, just display random 5)*/}
 		</div>
 	)
 }
