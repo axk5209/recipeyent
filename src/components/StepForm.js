@@ -7,7 +7,7 @@ import SecondStep from './SecondStep'
 import Confirm from './Confirm'
 import Success from './Success'
 
-const emailRegex = RegExp(/^[^@]+@[^@]+\.[^@]+$/)
+const cookTimeRegex = RegExp(/^[^@]+@[^@]+\.[^@]+$/)
 const phoneRegex = RegExp(/^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4,6})$/)
 // Step titles
 const labels = [ 'First Step', 'Second Step', 'Confirmation' ]
@@ -15,13 +15,12 @@ const labels = [ 'First Step', 'Second Step', 'Confirmation' ]
 const StepForm = () => {
 	const [ steps, setSteps ] = useState(0)
 	const [ fields, setFields ] = useState({
-		firstName: '',
-		lastName: '',
-		email: '',
-		gender: '',
-		date: '',
-		city: '',
-		phone: ''
+		title: '',
+		tags: '',
+		cookTime: '',
+		preparationTime: '',
+		ingredients: '',
+		procedure: ''
 	})
 	// Copy fields as they all have the same name
 	const [ filedError, setFieldError ] = useState({
@@ -41,37 +40,6 @@ const StepForm = () => {
 		setFields({
 			...fields,
 			[input]: value
-		})
-
-		// Handle errors
-		const formErrors = { ...filedError }
-		const lengthValidate = value.length > 0 && value.length < 3
-
-		switch (input) {
-			case 'firstName':
-				formErrors.firstName = lengthValidate ? 'Minimum 3 characaters required' : ''
-				break
-			case 'lastName':
-				formErrors.lastName = lengthValidate ? 'Minimum 3 characaters required' : ''
-				break
-			case 'email':
-				formErrors.email = emailRegex.test(value) ? '' : 'Invalid email address'
-				break
-			case 'phone':
-				formErrors.phone = phoneRegex.test(value) ? '' : 'Please enter a valid phone number. i.e: xxx-xxx-xxxx'
-				break
-			case 'city':
-				formErrors.city = lengthValidate ? 'Minimum 3 characaters required' : ''
-				break
-			default:
-				break
-		}
-
-		// set error hook
-		Object.values(formErrors).forEach(error => (error.length > 0 ? setIsError(true) : setIsError(false)))
-		// set errors hook
-		setFieldError({
-			...formErrors
 		})
 	}
 

@@ -4,52 +4,41 @@ import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 
 // Destructure props
-const SecondStep = ({ handleNext, handleBack, handleChange, values: { date, phone, city }, filedError, isError }) => {
+const SecondStep = ({ handleNext, handleBack, handleChange, values: {ingredients, procedure }, filedError, isError }) => {
 	// Check if all values are not empty
-	const isEmpty = date.length > 0 && city.length > 0
+	const isEmpty = ingredients.length > 0 && procedure.length > 0
 	return (
 		<Fragment>
 			<Grid container spacing={2}>
 				<Grid item xs={12}>
 					<TextField
+						multiline
 						fullWidth
-						label="City"
-						name="city"
-						placeholder="Enter your city"
-						defaultValue={city}
-						onChange={handleChange('city')}
+						label="Ingredients"
+						name="ingredients"
+						placeholder="2/3 cups of milk, 5 tbs salt"
+						defaultValue={ingredients}
+						onChange={handleChange('ingredients')}
 						margin="normal"
-						error={filedError.city !== ''}
-						helperText={filedError.city !== '' ? `${filedError.city}` : ''}
+						error={filedError.ingredients !== ''}
+						helperText={filedError.ingredients !== '' ? `${filedError.ingredients}` : ''}
 						required
 					/>
 				</Grid>
+				
 				<Grid item xs={12}>
 					<TextField
 						fullWidth
-						InputLabelProps={{
-							shrink: true
-						}}
-						label="Date of birth"
-						name="birthday"
-						type="date"
-						defaultValue={date}
-						onChange={handleChange('date')}
+						multiline
+						label="Procedure"
+						name="procedure"
+						placeholder={"1. Pour milk \n2. Add salt"}
+						defaultValue={procedure}
+						onChange={handleChange('procedure')}
 						margin="normal"
+						error={filedError.procedure !== ''}
+						helperText={filedError.procedure !== '' ? `${filedError.procedure}` : ''}
 						required
-					/>
-				</Grid>
-				<Grid item xs={12}>
-					<TextField
-						fullWidth
-						label="Phone number"
-						name="phone"
-						placeholder="i.e: xxx-xxx-xxxx"
-						defaultValue={phone}
-						onChange={handleChange('phone')}
-						margin="normal"
-						error={filedError.phone !== ''}
-						helperText={filedError.phone !== '' ? `${filedError.phone}` : ''}
 					/>
 				</Grid>
 			</Grid>

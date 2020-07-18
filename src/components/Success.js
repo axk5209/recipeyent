@@ -8,7 +8,7 @@ const Success = () => {
 				Thank you!
 			</Typography>
 			<Typography component="p" align="center" style={{ marginTop: 40 }}>
-				You will get an email with further instructions
+				Your recipe can now be viewed by recipeyents!
 			</Typography>
 		</Fragment>
 	)
