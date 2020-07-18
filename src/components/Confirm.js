@@ -4,29 +4,48 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import Divider from '@material-ui/core/Divider'
 import Button from '@material-ui/core/Button'
-
+import { useDispatch, useSelector } from 'react-redux'
+import recipeService from "../services/recipes"
 // Destructure props
 const Confirm = ({ handleNext, handleBack, values: { title, tags, cookTime, preparationTime, ingredients, procedure } }) => {
+	const currentUser = useSelector(state => state.currentUser)
+
+
 	const formattedTitle = title
-	const formattedTags = tags.replace(/\s+/g, '').toLowerCase()
+	const formattedTags = tags.replace(/\n/g, ",").replace(/\s+/g, '').toLowerCase()
 	const formattedCookTime = cookTime
 	const formattedPreparationTime = preparationTime
-	const formattedIngredients = ingredients.replace(/,/g, '\n').toLowerCase()
-	const formattedProcedure = procedure
-	function onConfirm ()
+	const formattedIngredients = ingredients.split("\n").map(item => `\u2022${item}`).join("\n")
+	const formattedProcedure = procedure.split("\n").map((item, index) => `${index+1}. ${item}`).join("\n")
+	async function onConfirm ()
 	{
-		handleNext()
+		const serviceAuthor = `${currentUser.firstName} ${currentUser.lastName}`
+		const serviceTitle = title
 		const serviceTags = tags.replace(/\s+/g, '').toLowerCase().split(",")
 		const serviceCookTime = parseInt(cookTime)
 		const servicePreparationTime = parseInt(preparationTime) 
-		const serviceIngredients = ingredients.split(",")
+		const serviceIngredients = ingredients.split("\n")
 		const serviceProcedure = procedure.split('\n')
-		console.log(serviceTags)
-		console.log(serviceCookTime)
-		console.log(servicePreparationTime)
-		console.log(serviceIngredients)
-		console.log(serviceProcedure)
-		
+
+		const newRecipe = {
+			author: serviceAuthor,
+			title: serviceTitle,
+			cookTime: serviceCookTime,
+			preparationTime: servicePreparationTime,
+			ingredients: serviceIngredients,
+			procedure: serviceProcedure
+		}
+		if (serviceTags.length > 0) //If service tags is not an empty array
+		{
+			newRecipe.tags = serviceTags
+		}
+		await recipeService.create(newRecipe)
+		handleNext()
+		// console.log(serviceTags)
+		// console.log(serviceCookTime)
+		// console.log(servicePreparationTime)
+		// console.log(serviceIngredients)
+		// console.log(serviceProcedure)
 	}
 	return (
 		<Fragment>
@@ -56,13 +75,13 @@ const Confirm = ({ handleNext, handleBack, values: { title, tags, cookTime, prep
 				<Divider />
 
 				<ListItem>
-					<ListItemText primary="Ingredients" secondary={formattedIngredients} style = {{wordWrap: "break-word"}}/>
+					<ListItemText primary="Ingredients" secondary={formattedIngredients} style = {{wordWrap: "break-word", whiteSpace: 'pre-line'}}/>
 				</ListItem>
 
 				<Divider />
 
 				<ListItem>
-					<ListItemText primary="Procedure" secondary={formattedProcedure} style = {{wordWrap: "break-word"}}/>
+					<ListItemText primary="Procedure" secondary={formattedProcedure} style = {{wordWrap: "break-word", whiteSpace: 'pre-line'}}/>
 				</ListItem>
 
 				<Divider />

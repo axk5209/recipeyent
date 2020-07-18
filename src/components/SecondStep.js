@@ -14,7 +14,7 @@ const SecondStep = ({ handleNext, handleBack, handleChange, values: {ingredients
 					<TextField
 						multiline
 						fullWidth
-						label="Ingredients"
+						label="Ingredients (line-delimited)"
 						name="ingredients"
 						placeholder="2/3 cups of milk, 5 tbs salt"
 						defaultValue={ingredients}
@@ -30,7 +30,7 @@ const SecondStep = ({ handleNext, handleBack, handleChange, values: {ingredients
 					<TextField
 						fullWidth
 						multiline
-						label="Procedure"
+						label="Procedure (line-delimited: don't number each step)"
 						name="procedure"
 						placeholder={"1. Pour milk \n2. Add salt"}
 						defaultValue={procedure}

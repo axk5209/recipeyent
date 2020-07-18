@@ -65,7 +65,7 @@ export default function RecipePage(props) {
 	if (!recipe) return (<div></div>)
 	//console.log(currentUser)
 	const tags = recipe.tags.sort((a, b) => a.votes > b.votes).slice(0, 5).map(item => item.title).join(", ")
-	const procedureList = [recipe.procedure]
+	const procedureList = recipe.procedure
 
 	const handleToggleIngredient = value => () => {
 		const currentIndex = checkedIngredients.indexOf(value);
