@@ -46,7 +46,7 @@ export default function CustomizedTables(props) {
 	const classes = useStyles();
 	const history = useHistory()
 	//console.log(props.createdRecipes)
-	//console.log(props.createdRecipes)
+	//console.log(props)
 	const rows = props.createdRecipes.map(recipe => {
 		//console.log(recipe)
 		const sortedTags = recipe.tags.sort((a, b) => a.votes > b.votes).slice(0, 5).map(item => item.title).join(", ")
@@ -81,7 +81,7 @@ export default function CustomizedTables(props) {
 								{row.title}
 							</StyledTableCell>
 							<StyledTableCell align="right">{row.tags ? row.tags : "No Tags Yet"}</StyledTableCell>
-							<StyledTableCell align="right">{row.rating ? `${row.rating.toFixed(2)}` : " (unrated)"}</StyledTableCell>
+							<StyledTableCell align="right">{row.rating ? `${row.rating.toFixed(2)}` : "unrated"}</StyledTableCell>
 						</StyledTableRow>
 					))}
 				</TableBody>

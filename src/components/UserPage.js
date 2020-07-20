@@ -59,16 +59,18 @@ export default function UserPage ()
 	const dispatch = useDispatch()
 	if (!user)
 		return (<div></div>)
-	const tags = user.tags.sort((a, b) => a.votes > b.votes).slice(0, 5).map(item => item.title).join(", ")
+	//console.log(user.createdRecipes)
 
 	async function onFollow () {
 		//console.log("Follow Clicked")
 		//console.log(currentUser.followedUsers.concat(user.id))
-		const updatedUserForServer = {id: currentUser.id, followedUsers: currentUser.followedUsers.map(user => user.id).concat(user.id)}
-		const updatedUserForStore = {...currentUser, followedUsers: currentUser.followedUsers.concat(user)}
-		await userService.update(updatedUserForServer)
-		dispatch(setCurrentUserAction(updatedUserForStore))
-		window.localStorage.setItem("currentUser", JSON.stringify(updatedUserForStore))
+		const updatedFollowedUser = {id: user.id, followerCount: user.followerCount+1}
+		const updatedCurrentUserForServer = {id: currentUser.id, followedUsers: currentUser.followedUsers.map(user => user.id).concat(user.id)}
+		const updatedCurrentUserForStore = {...currentUser, followedUsers: currentUser.followedUsers.concat(user)}
+		await userService.update(updatedFollowedUser)
+		await userService.update(updatedCurrentUserForServer)
+		dispatch(setCurrentUserAction(updatedCurrentUserForStore))
+		window.localStorage.setItem("currentUser", JSON.stringify(updatedCurrentUserForStore))
 	}
 	
 	return (
@@ -84,8 +86,7 @@ export default function UserPage ()
 			<br></br>
 			<Container align="center">
 				<Typography variant="h2" className={classes.message}>{user.firstName} {user.lastName}</Typography>
-				<Typography variant="h5" className={classes.subheading}>{tags ? tags : "No Tags Yet"}</Typography>
-				<Typography variant="h6">{user.averageRating ? user.averageRating : "unrated"}</Typography>
+				<Typography variant="h5" className={classes.subheading}>{`${user.followerCount} ${user.followerCount === 1 ? "follower" : "followers"}`}</Typography>
 			</Container>
 			<br></br>
 			<Container align = "center">
@@ -95,7 +96,7 @@ export default function UserPage ()
 				}
 				<br></br>
 				<br></br>
-				<Button onClick = {onFollow} fullWidth variant = "outlined" color = "primary" size = "large">Follow</Button>
+				{currentUser && <Button onClick = {onFollow} fullWidth variant = "outlined" color = "primary" size = "large">Follow</Button>}
 			</Container>
 			<br></br>
 			<br></br>

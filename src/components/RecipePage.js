@@ -63,6 +63,7 @@ export default function RecipePage(props) {
 	const [newTags, setNewTags] = useState('');
 	
 	if (!recipe) return (<div></div>)
+
 	//console.log(currentUser)
 	const tags = recipe.tags.sort((a, b) => a.votes > b.votes).slice(0, 5).map(item => item.title).join(", ")
 	const procedureList = recipe.procedure
@@ -288,12 +289,12 @@ export default function RecipePage(props) {
 			</Box>
 			<br></br>
 			<br></br>
-			<br></br>
-			<br></br>
-			<br></br>
-			<br></br>
-			{currentUser && 
+			{(currentUser && recipe.author.id !== currentUser.id) && 
 			<div>
+				<br></br>
+				<br></br>
+				<br></br>
+				<br></br>
 				<Box mx = {20}>
 					<Paper style={{ padding: 16 }}>
 						<form className={classes.root} noValidate autoComplete="off" onSubmit={addRating}>
@@ -341,6 +342,20 @@ export default function RecipePage(props) {
 				<br></br>
 				<br></br>
 			</div>
+			
 			}
-		</div>)
+
+			{(currentUser && recipe.author.id === currentUser.id) &&  
+				<Container align="center">
+					<br></br>
+					<br></br>
+					<Typography variant="h5" className={classes.subheading}>You cannot express your opinions on this recipe because you created it.</Typography>
+					<br></br>
+					<br></br>
+				</Container>
+			}
+			<br></br>
+			<br></br>
+		</div>
+	)
 }

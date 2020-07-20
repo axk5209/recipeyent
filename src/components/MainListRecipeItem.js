@@ -47,8 +47,11 @@ export default function ComplexGrid(props) {
 				</Grid>
 				<Grid item xs={12} sm container direction = "column">
 					<Grid item >
-						<Typography gutterBottom variant="h6" style = {{fontWeight: "bold"}}>
-							{props.title}
+						<Typography variant="h6" display = "inline" style = {{fontWeight: "bold"}}>
+							{`${props.title}`}
+						</Typography>
+						<Typography variant="h6" display = "inline">
+							{` \u2022 ${props.rating ? props.rating : "unrated"}`}
 						</Typography>
 						<Typography variant="body1" gutterBottom>
 							{props.tags}

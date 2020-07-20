@@ -9,7 +9,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux'
 import { Box } from '@material-ui/core';
 import { Grid } from '@material-ui/core'
-
+import {
+	Link
+} from "react-router-dom"
 const useStyles = makeStyles((theme) => ({
 	createButton: {
 		flexGrow: 1,
@@ -48,10 +50,11 @@ const Dashboard = () => {
 			</Container> */}
 			<Container align = "center">
 				<Typography variant = "h3" className = {classes.message}>Your Recipes</Typography>
+				<Typography variant="h5" className={classes.subheading}>{`${currentUser.followerCount} followers`}</Typography>
 			</Container>
 			<br></br>
 			<Container align = "center">
-				<Button variant = "outlined" size = "large" color="primary">
+				<Button variant = "outlined" size = "large" color="primary" component = {Link} to = {"/create"}>
 					<Typography variant = "h5" className = {classes.createButton}>Create New</Typography>
 				</Button>
 			</Container>

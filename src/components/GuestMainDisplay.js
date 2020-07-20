@@ -3,19 +3,17 @@ import LoggedInHeader from './LoggedInHeader'
 import MainRecipeList from './MainRecipeList'
 import MainUsersList from './MainUsersList'
 
-import CreatedRecipes from './CreatedRecipes'
-import LoggedInHeaderButtons from './LoggedInHeaderButtons'
-import Button from '@material-ui/core/Button';
+
 import { Container } from '@material-ui/core'
 import { Typography, CssBaseline } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux'
 import { MenuItem } from '@material-ui/core';
-import { Paper } from '@material-ui/core'
 import { withStyles } from "@material-ui/core/styles";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import InputBase from "@material-ui/core/InputBase";
+import HomeHeaderButtons from './HomeHeaderButtons'
 const useStyles = makeStyles((theme) => ({
 	createButton: {
 		flexGrow: 1,
@@ -71,11 +69,8 @@ const BootstrapInput = withStyles(theme => ({
 const MainDisplay = () => {
 	console.log("Main Displayed")
 	const classes = useStyles()
-	const currentUser = useSelector(state => {
-		//console.log(state)
-		return state.currentUser ? state.currentUser: null
-	})
-	
+	let displayPossibilities 
+
 	const allUsers = useSelector(state => {
 		//console.log(state)
 		return state.users ? state.users: null
@@ -84,14 +79,16 @@ const MainDisplay = () => {
 		//console.log(state)
 		return state.recipes ? state.recipes: null
 	})
-	const queuedRecipes = currentUser.queuedRecipes
-	const favoritedRecipes = currentUser.favoritedRecipes
-	const followedUsers = currentUser.followedUsers
+	
 	const topRecipes = allRecipes
 	const topUsers = allUsers
-	const displayPossibilities = [topRecipes, topUsers, followedUsers, favoritedRecipes, queuedRecipes]
+
+	displayPossibilities = [topRecipes, topUsers]
+	
 	const [view, setView] = React.useState(0);
 	const [displayItems, setDisplayItems] = useState(displayPossibilities[view])
+
+
 	useEffect(() => {
 		setDisplayItems(displayPossibilities[view])
 	}, [displayPossibilities])
@@ -100,13 +97,11 @@ const MainDisplay = () => {
 		setView(event.target.value);
 		setDisplayItems(displayPossibilities[event.target.value])
 	};
-	//console.log(currentUser)
-
 
 	return (
 		<div>
 			<LoggedInHeader>
-				<LoggedInHeaderButtons currentView = "Main"/>
+				<HomeHeaderButtons/>
 			</LoggedInHeader>
 			<br></br>
 			<Container align = "center">
@@ -121,15 +116,12 @@ const MainDisplay = () => {
 					>
 						<MenuItem value={0}>Top Recipes</MenuItem>
 						<MenuItem value={1}>Top Users</MenuItem>
-						<MenuItem value={2}>Followed Users</MenuItem>
-						<MenuItem value={3}>Favorited Recipes</MenuItem>
-						<MenuItem value={4}>Queued Recipes</MenuItem>
 					</Select>
 				</FormControl>
 			</Container>
 			<br></br>
-			{!(view === 1 || view == 2) && <MainRecipeList displayItems = {displayItems}/>}
-			{(view === 1 || view == 2) && <MainUsersList displayItems = {displayItems}/>}
+			{!(view === 1) && <MainRecipeList displayItems = {displayItems}/>}
+			{(view === 1) && <MainUsersList displayItems = {displayItems}/>}
 			<br></br>
 			<br></br>
 		</div>

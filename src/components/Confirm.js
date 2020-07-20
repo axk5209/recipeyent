@@ -21,7 +21,7 @@ const Confirm = ({ handleNext, handleBack, values: { title, tags, cookTime, prep
 	{
 		const serviceAuthor = `${currentUser.firstName} ${currentUser.lastName}`
 		const serviceTitle = title
-		const serviceTags = tags.replace(/\s+/g, '').toLowerCase().split(",")
+		const serviceTags = tags.replace(/\s+/g, '').toLowerCase().split(",").map(item => ({title: item, votes: 1}))
 		const serviceCookTime = parseInt(cookTime)
 		const servicePreparationTime = parseInt(preparationTime) 
 		const serviceIngredients = ingredients.split("\n")

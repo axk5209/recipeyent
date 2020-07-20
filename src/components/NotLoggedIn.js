@@ -8,13 +8,13 @@ import {
 	Switch, Route, Redirect
 } from "react-router-dom"
 import UserPage from './UserPage'
+import GuestMainDisplay from './GuestMainDisplay'
 const NotLoggedIn = () => {
 
 
 
 	return (
 		<Switch>
-			<Redirect exact from="/" to="/home" />
 			<Route path="/login">
 				<Login />
 			</Route>
@@ -30,6 +30,10 @@ const NotLoggedIn = () => {
 			<Route path="/users/:id">
 				<UserPage />
 			</Route>
+			<Route path="/main">
+				<GuestMainDisplay />
+			</Route>
+			<Redirect from="/" to="/home" />
 			{/*<Route path="/recipes">
 				<Bloglist />
 			</Route>
