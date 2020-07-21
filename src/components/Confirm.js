@@ -6,8 +6,11 @@ import Divider from '@material-ui/core/Divider'
 import Button from '@material-ui/core/Button'
 import { useDispatch, useSelector } from 'react-redux'
 import recipeService from "../services/recipes"
+import { setCurrentUserAction } from "../reducers/currentUser"
+
 // Destructure props
 const Confirm = ({ handleNext, handleBack, values: { title, tags, cookTime, preparationTime, ingredients, procedure } }) => {
+	const dispatch = useDispatch()
 	const currentUser = useSelector(state => state.currentUser)
 
 
@@ -24,6 +27,7 @@ const Confirm = ({ handleNext, handleBack, values: { title, tags, cookTime, prep
 		const serviceTags = tags.replace(/\s+/g, '').toLowerCase().split(",").map(item => ({title: item, votes: 1}))
 		const serviceCookTime = parseInt(cookTime)
 		const servicePreparationTime = parseInt(preparationTime) 
+		const serviceTotalTime = serviceCookTime + servicePreparationTime
 		const serviceIngredients = ingredients.split("\n")
 		const serviceProcedure = procedure.split('\n')
 
@@ -32,6 +36,7 @@ const Confirm = ({ handleNext, handleBack, values: { title, tags, cookTime, prep
 			title: serviceTitle,
 			cookTime: serviceCookTime,
 			preparationTime: servicePreparationTime,
+			totalTime: serviceTotalTime,
 			ingredients: serviceIngredients,
 			procedure: serviceProcedure
 		}
@@ -39,7 +44,10 @@ const Confirm = ({ handleNext, handleBack, values: { title, tags, cookTime, prep
 		{
 			newRecipe.tags = serviceTags
 		}
-		await recipeService.create(newRecipe)
+		const createdRecipe = await recipeService.create(newRecipe)
+		const updatedUserForStore = {...currentUser, createdRecipes: currentUser.createdRecipes.concat(createdRecipe)}
+		dispatch(setCurrentUserAction(updatedUserForStore))
+		window.localStorage.setItem("currentUser", JSON.stringify(updatedUserForStore))
 		handleNext()
 		// console.log(serviceTags)
 		// console.log(serviceCookTime)

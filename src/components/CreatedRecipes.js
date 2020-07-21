@@ -10,6 +10,9 @@ import Paper from '@material-ui/core/Paper';
 import {
 	useHistory
 } from "react-router-dom"
+import { useDispatch, useSelector } from 'react-redux'
+import Typography from "@material-ui/core/Typography";
+
 const StyledTableCell = withStyles((theme) => ({
 	head: {
 		backgroundColor: theme.palette.primary.main,
@@ -47,19 +50,21 @@ export default function CustomizedTables(props) {
 	const history = useHistory()
 	//console.log(props.createdRecipes)
 	//console.log(props)
+	const allRecipes = useSelector(state => {
+		//console.log(state)
+		return state.recipes ? state.recipes: null
+	})
+	if (!allRecipes)
+		return <div></div>
+
+	if (props.createdRecipes.length === 0)
+		return <Typography variant="h4">No Recipes Yet</Typography>
+		
 	const rows = props.createdRecipes.map(recipe => {
-		//console.log(recipe)
-		const sortedTags = recipe.tags.sort((a, b) => a.votes > b.votes).slice(0, 5).map(item => item.title).join(", ")
+		const sortedTags = recipe.tags.sort((a, b) => b.votes - a.votes).slice(0, 5).map(item => item.title).join(", ")
 		return createData(recipe.title, sortedTags, recipe.rating, recipe.id)
 	})
-	/*const rows = [
-	  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-	  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-	  createData('Eclair', 262, 16.0, 24, 6.0),
-	  createData('Cupcake', 305, 3.7, 67, 4.3),
-	  createData('Gingerbread', 356, 16.0, 49, 3.9),
-	];*/
-	//console.log(rows)
+	
 	function onClick (id)
 	{
 		history.push(`/recipes/${id}`)

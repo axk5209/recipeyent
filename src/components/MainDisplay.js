@@ -69,13 +69,13 @@ const BootstrapInput = withStyles(theme => ({
   }))(InputBase);
 
 const MainDisplay = () => {
-	console.log("Main Displayed")
+	//console.log("Main Displayed")
 	const classes = useStyles()
 	const currentUser = useSelector(state => {
 		//console.log(state)
 		return state.currentUser ? state.currentUser: null
 	})
-	
+	console.log(currentUser)
 	const allUsers = useSelector(state => {
 		//console.log(state)
 		return state.users ? state.users: null
@@ -84,23 +84,24 @@ const MainDisplay = () => {
 		//console.log(state)
 		return state.recipes ? state.recipes: null
 	})
-	const queuedRecipes = currentUser.queuedRecipes
-	const favoritedRecipes = currentUser.favoritedRecipes
-	const followedUsers = currentUser.followedUsers
-	const topRecipes = allRecipes
-	const topUsers = allUsers
-	const displayPossibilities = [topRecipes, topUsers, followedUsers, favoritedRecipes, queuedRecipes]
+
+
 	const [view, setView] = React.useState(0);
-	const [displayItems, setDisplayItems] = useState(displayPossibilities[view])
-	useEffect(() => {
-		setDisplayItems(displayPossibilities[view])
-	}, [displayPossibilities])
+
+
+	const queuedRecipes = currentUser.queuedRecipes.map(id => allRecipes.find((item) => item.id === id))
+	const favoritedRecipes = currentUser.favoritedRecipes.map(id => allRecipes.find((item) => item.id === id))
+	const followedUsers = currentUser.followedUsers.map(id => allUsers.find((item) => item.id === id))
+	const topRecipes = allRecipes.sort((a, b) => b.rating - a.rating)
+	const topUsers = allUsers.sort((a, b) => b.followerCount - a.followerCount)
+	const displayPossibilities = [topRecipes, topUsers, followedUsers, favoritedRecipes, queuedRecipes]
+
 
 	const handleChange = event => {
 		setView(event.target.value);
-		setDisplayItems(displayPossibilities[event.target.value])
 	};
-	//console.log(currentUser)
+
+	//console.log(displayPossibilities)
 
 
 	return (
@@ -128,8 +129,8 @@ const MainDisplay = () => {
 				</FormControl>
 			</Container>
 			<br></br>
-			{!(view === 1 || view == 2) && <MainRecipeList displayItems = {displayItems}/>}
-			{(view === 1 || view == 2) && <MainUsersList displayItems = {displayItems}/>}
+			{!(view === 1 || view == 2) && <MainRecipeList displayItems = {displayPossibilities[view]}/>}
+			{(view === 1 || view == 2) && <MainUsersList displayItems = {displayPossibilities[view]}/>}
 			<br></br>
 			<br></br>
 		</div>

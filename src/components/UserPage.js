@@ -55,21 +55,39 @@ export default function UserPage ()
 	const classes = useStyles()
 	const id = useParams().id
 	const user = useSelector(state => state.users.find((item) => item.id === id))
+
 	const currentUser = useSelector(state => state.currentUser)
 	const dispatch = useDispatch()
+
+	const [followed, setFollowed] = useState (
+		currentUser ? 
+			(currentUser.followedUsers.find(item => item === id) ? true : false) :
+			false
+	);
+	
 	if (!user)
 		return (<div></div>)
-	//console.log(user.createdRecipes)
+	user.createdRecipes.length !== 0 ? console.log("Not Empty") : console.log("Empty")
 
 	async function onFollow () {
-		//console.log("Follow Clicked")
-		//console.log(currentUser.followedUsers.concat(user.id))
 		const updatedFollowedUser = {id: user.id, followerCount: user.followerCount+1}
-		const updatedCurrentUserForServer = {id: currentUser.id, followedUsers: currentUser.followedUsers.map(user => user.id).concat(user.id)}
-		const updatedCurrentUserForStore = {...currentUser, followedUsers: currentUser.followedUsers.concat(user)}
+		const updatedCurrentUserForServer = {id: currentUser.id, followedUsers: currentUser.followedUsers.concat(user.id)}
+		const updatedCurrentUserForStore = {...currentUser, followedUsers: currentUser.followedUsers.concat(user.id)}
 		await userService.update(updatedFollowedUser)
 		await userService.update(updatedCurrentUserForServer)
 		dispatch(setCurrentUserAction(updatedCurrentUserForStore))
+		setFollowed(true)
+		window.localStorage.setItem("currentUser", JSON.stringify(updatedCurrentUserForStore))
+	}
+
+	const onUnfollow = async (event) => {
+		const updatedFollowedUser = {id: user.id, followerCount: user.followerCount-1}
+		const updatedCurrentUserForServer = {id: currentUser.id, followedUsers: currentUser.followedUsers.filter(id => id !== user.id)}
+		const updatedCurrentUserForStore = {...currentUser, followedUsers: currentUser.followedUsers.filter(id => id !== user.id)}
+		await userService.update(updatedFollowedUser)
+		await userService.update(updatedCurrentUserForServer)
+		dispatch(setCurrentUserAction(updatedCurrentUserForStore))
+		setFollowed(false)
 		window.localStorage.setItem("currentUser", JSON.stringify(updatedCurrentUserForStore))
 	}
 	
@@ -90,14 +108,21 @@ export default function UserPage ()
 			</Container>
 			<br></br>
 			<Container align = "center">
-				{user.createdRecipes ? 
-				<CreatedRecipes createdRecipes = {user.createdRecipes}/> :
-				"No Recipes Yet"
-				}
+				<CreatedRecipes createdRecipes = {user.createdRecipes}/>					
 				<br></br>
 				<br></br>
-				{currentUser && <Button onClick = {onFollow} fullWidth variant = "outlined" color = "primary" size = "large">Follow</Button>}
+				{(currentUser && user.id !== currentUser.id) && <Button onClick = {followed ? onUnfollow : onFollow} fullWidth variant = "outlined" color = "primary" size = "large">{followed ? "Unfollow" : "Follow"}</Button>}
 			</Container>
+
+			{(currentUser && user.id === currentUser.id) &&  
+				<Container align="center">
+					<br></br>
+					<br></br>
+					<Typography variant="h5" className={classes.subheading}>You cannot follow yourself.</Typography>
+					<br></br>
+					<br></br>
+				</Container>
+			}
 			<br></br>
 			<br></br>
 		</div>

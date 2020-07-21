@@ -11,6 +11,8 @@ import { Button } from '@material-ui/core'
 import { Box } from '@material-ui/core'
 import HomeHeaderButtons from './HomeHeaderButtons'
 import LandingPageRecipeCard from './LandingPageRecipeCard'
+import LandingPageUserCard from './LandingPageUserCard'
+
 import { useDispatch, useSelector } from 'react-redux'
 import {
 	Link
@@ -40,12 +42,13 @@ const MainDisplay = () => {
 		return state.recipes ? state.recipes: null
 	})
 
-	if (allUsers.length === 0)
+	if (allUsers.length === 0 || allRecipes.length == 0)
 		return <div></div>
 
+	//console.log(allUsers)
 	const topRecipes = allRecipes.sort((a, b) => b.rating - a.rating).slice(0, 4)
-	console.log(allRecipes.sort((a, b) => a.rating > b.rating).map(recipe => recipe.rating))
-	console.log(topRecipes.map(recipe => recipe.rating))
+	const topUsers = allUsers.sort((a, b) => b.followerCount - a.followerCount).slice(0, 4)
+
 	return (
 		<React.Fragment>
 			<CssBaseline />
@@ -61,7 +64,7 @@ const MainDisplay = () => {
 			<br></br>
 			<Paper square elevation={0} align = "center">
 				<br></br>
-				<Typography variant = "h4" align = "center" className = {classes.subheading}>Top-Rated Recipes</Typography>
+				<Typography variant = "h4" align = "center" className = {classes.subheading}>Top Recipes</Typography>
 				<Box mx = {6} my = {4}> 
 					<Grid container align = "center" spacing = {6} justify = "center">
 						{topRecipes.map(recipe => 
@@ -81,24 +84,17 @@ const MainDisplay = () => {
 			<br></br>
 			<Paper square elevation={0} align = "center">
 				<br></br>
-				<Typography variant = "h4" align = "center" className = {classes.subheading}>Top-Rated Recipes</Typography>
+				<Typography variant = "h4" align = "center" className = {classes.subheading}>Top Users</Typography>
 				<Box mx = {6} my = {4}> 
 					<Grid container align = "center" spacing = {6} justify = "center">
-						<Grid item xs = {12} md = {6} lg = {3}>
-							<RecipeCard />
-						</Grid>
-						<Grid item xs = {12} md = {6} lg = {3}>
-							<RecipeCard />
-						</Grid>
-						<Grid item xs = {12} md = {6} lg = {3}>
-							<RecipeCard />
-						</Grid>
-						<Grid item xs = {12} md = {6} lg = {3}>
-							<RecipeCard />
-						</Grid>
+						{topUsers.map(user => 
+							<Grid item xs = {12} md = {6} lg = {3} key = {user.id}>
+								<LandingPageUserCard user = {user} />
+							</Grid>
+						)}
 					</Grid>
 				</Box>
-				<Button size = "large" align = "center" variant = "outlined"  >View More</Button>
+				<Button size = "large" align = "center" variant = "outlined" component = {Link} to = {`/main`}>View More</Button>
 				<br></br>
 				<br></br>
 			</Paper>

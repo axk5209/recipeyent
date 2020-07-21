@@ -51,7 +51,7 @@ export default function ComplexGrid(props) {
 							{`${props.title}`}
 						</Typography>
 						<Typography variant="h6" display = "inline">
-							{` \u2022 ${props.rating ? props.rating : "unrated"}`}
+							{` \u2022 ${props.rating ? props.rating.toFixed(2): "unrated"}`}
 						</Typography>
 						<Typography variant="body1" gutterBottom>
 							{props.tags}

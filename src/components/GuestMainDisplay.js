@@ -66,7 +66,7 @@ const BootstrapInput = withStyles(theme => ({
 	}
   }))(InputBase);
 
-const MainDisplay = () => {
+const GuestMainDisplay = (props) => {
 	console.log("Main Displayed")
 	const classes = useStyles()
 	let displayPossibilities 
@@ -85,7 +85,7 @@ const MainDisplay = () => {
 
 	displayPossibilities = [topRecipes, topUsers]
 	
-	const [view, setView] = React.useState(0);
+	const [view, setView] = React.useState(props.view ? props.view : 0);
 	const [displayItems, setDisplayItems] = useState(displayPossibilities[view])
 
 
@@ -128,5 +128,5 @@ const MainDisplay = () => {
 	)
 }
 
-export default MainDisplay
+export default GuestMainDisplay
 

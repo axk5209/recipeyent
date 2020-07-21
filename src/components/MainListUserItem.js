@@ -35,8 +35,18 @@ export default function ComplexGrid(props) {
 	
 	return (
 		<Paper elevation={3} className={classes.paper}>
-			<Grid container spacing={2} align ="center">
+			<Grid container spacing={2} align ="left">
+				<Grid item>
+						<ButtonBase className={classes.image}>
+							<img
+								className={classes.img}
+								alt="Chef Hat Image"
+								src={chefHat}
+							/>
+						</ButtonBase>
+				</Grid>
 				<Grid item xs={12} sm container direction = "column">
+					
 					<Grid item >
 						<Typography variant="h5" gutterBottom style = {{fontWeight: "bold"}}>
 							{props.name}
