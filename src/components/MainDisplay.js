@@ -75,7 +75,7 @@ const MainDisplay = () => {
 		//console.log(state)
 		return state.currentUser ? state.currentUser: null
 	})
-	console.log(currentUser)
+	//console.log(currentUser)
 	const allUsers = useSelector(state => {
 		//console.log(state)
 		return state.users ? state.users: null

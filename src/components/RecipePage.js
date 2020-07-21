@@ -61,6 +61,7 @@ export default function RecipePage(props) {
 	const [newReview, setNewReview] = useState('');
 	const [newRating, setNewRating] = useState('');
 	const [newTags, setNewTags] = useState('');
+	const [tagsToRemove, setTagsToRemove] = useState('');
 	const [favorited, setFavorited] = useState (
 		currentUser ? 
 			(currentUser.favoritedRecipes.find(item => item === id) ? true : false) :
@@ -72,32 +73,31 @@ export default function RecipePage(props) {
 			false
 	);
 	const [rated, setRated] = useState (
-		currentUser ? 
-			(currentUser.ratingsGiven ? 
-				(currentUser.ratingsGiven[id] ? true : false) :
-				false
-			):
-			false
+		currentUser &&  currentUser.ratingsGiven && currentUser.ratingsGiven[id]
 	);
 
 	const [reviewed, setReviewed] = useState (
-		currentUser ? 
-			(currentUser.reviewsGiven[id] ? true : false) :
-			false
+		currentUser && currentUser.reviewsGiven && currentUser.reviewsGiven[id]
 	);
+	const [tagged, setTagged] = useState (
+		currentUser && currentUser.tagsGiven && currentUser.tagsGiven[id] && currentUser.tagsGiven[id].length > 0
+	);
+	
 	// useEffect(() => {
 	// 	setQueued(currentUser ? 
 	// 		(currentUser.queuedRecipes.find(item => item.id) ? true : false) :
 	// 		false)
 	// }, [currentUser])
 	if (!recipe) return (<div></div>)
-	
-	console.log(id)
-	currentUser && console.log(currentUser.reviewsGiven)
-	console.log(rated)
+	//console.log(currentUser)
+	//console.log(recipe)
+	//console.log(id)
+	//currentUser && console.log(currentUser.reviewsGiven)
+	//console.log(rated)
 
 
 	const tags = recipe.tags.sort((a, b) => b.votes - a.votes).slice(0, 5).map(item => item.title).join(", ")
+	const reviewsText = recipe.reviews.map(review => review.text)
 	const procedureList = recipe.procedure
 
 	const handleToggleIngredient = value => () => {
@@ -139,6 +139,11 @@ export default function RecipePage(props) {
 		{
 			setNewTags(event.target.value)
 		}
+		if (event.target.name === "tagsToRemove")
+		{
+			setTagsToRemove(event.target.value)
+		}
+		
 	}
 
 	const addReview = async (event) => {
@@ -154,7 +159,8 @@ export default function RecipePage(props) {
 		await userService.update(updatedCurrentUserForServer)
 		dispatch(setCurrentUserAction(updatedCurrentUserForStore))
 		window.localStorage.setItem("currentUser", JSON.stringify(updatedCurrentUserForStore))
-		const updatedRecipe = {...recipe, reviews: recipe.reviews.concat(newReview)}
+
+		const updatedRecipe = {...recipe, reviews: recipe.reviews.concat({userId: currentUser.id, text: newReview})}
 		await recipeService.update(updatedRecipe)
 		setNewReview('')
 	}
@@ -222,21 +228,29 @@ export default function RecipePage(props) {
 		dispatch(setCurrentUserAction(updatedCurrentUserForStore))
 		window.localStorage.setItem("currentUser", JSON.stringify(updatedCurrentUserForStore))
 
-		const updatedRecipeReviews = recipe.reviews.filter(review => review !== currentReviewGiven) //If undefined initially, just makes an object with one key
-		console.log(updatedRecipeReviews)
+		const updatedRecipeReviews = recipe.reviews.filter(review => review.userId !== currentUser.id) //If undefined initially, just makes an object with one key
+		//console.log(updatedRecipeReviews)
 		const updatedRecipe = {...recipe, reviews: updatedRecipeReviews}
 		await recipeService.update(updatedRecipe)
 	}
 	const addTags = async (event) => {
 		event.preventDefault()
-		//console.log(recipe.tags)
-		let updatedTags = recipe.tags.slice()
-		const splitTags = newTags.replace(/\s+/g, '').toLowerCase().split(",")
-		//console.log(splitTags)
+		if (!newTags)
+		{
+			return
+		}
+		const updatedTags = recipe.tags.slice() //has votes
+		let splitTags = newTags.replace(/\s+/g, '').toLowerCase().split(",") //no votes
+
+		if (currentUser.tagsGiven && currentUser.tagsGiven[recipe.id])
+		{
+			splitTags = splitTags.filter(x => !currentUser.tagsGiven[recipe.id].includes(x))
+		}
+
+
 		splitTags.forEach(tag => {
+			
 			let foundTag = updatedTags.find((item) => item.title === tag)
-			//console.log(tag)
-			//console.log(foundTag)
 			if (foundTag)
 			{
 				foundTag.votes += 1
@@ -246,10 +260,75 @@ export default function RecipePage(props) {
 				updatedTags.push({title: tag, votes: 1})
 			}
 		})
+
+		let updatedTagsGiven
+		if (currentUser.tagsGiven && currentUser.tagsGiven[recipe.id])
+		{
+			updatedTagsGiven = {...currentUser.tagsGiven, [recipe.id]: [...currentUser.tagsGiven[recipe.id], ...splitTags]} //If undefined initially, just makes an object with one key
+		}
+		else
+		{
+			updatedTagsGiven = {...currentUser.tagsGiven, [recipe.id]: splitTags} //If undefined initially, just makes an object with one key
+		}
+		const updatedCurrentUserForServer = {id: currentUser.id, "tagsGiven": updatedTagsGiven}
+		const updatedCurrentUserForStore = {...currentUser, "tagsGiven": updatedTagsGiven}
+		
+		await userService.update(updatedCurrentUserForServer)
+		dispatch(setCurrentUserAction(updatedCurrentUserForStore))
+		window.localStorage.setItem("currentUser", JSON.stringify(updatedCurrentUserForStore))
+		if (splitTags.length === 1)
+		{
+			setTagged(true)
+		}
+		
 		const updatedRecipe = {...recipe, tags: updatedTags}
 		await recipeService.update(updatedRecipe)
 		setNewTags('')
-		//console.log(updatedTags)
+	}
+	const removeTags = async (event) => {
+		event.preventDefault()
+		console.log(currentUser)
+		console.log(recipe)
+		let splitTags = tagsToRemove.replace(/\s+/g, '').toLowerCase().split(",")
+		splitTags = splitTags.filter(x => currentUser.tagsGiven[recipe.id].includes(x))
+		//console.log(splitTags)
+		let updatedTags = recipe.tags.slice()
+		//console.log(updatedTags.slice())
+		splitTags.forEach(tag => {
+			let foundTag = updatedTags.find((item) => item.title === tag)
+			//console.log(foundTag.clone())
+			if (foundTag)
+			{
+				if (foundTag.votes === 1)
+				{
+					//console.log("Tag Found")
+					//console.log(updatedTags.slice())
+					updatedTags = updatedTags.filter(x => x.title !== tag)
+					//console.log(updatedTags.slice())
+				}
+				else
+				{
+					foundTag.votes -= 1
+				}
+			}
+		})
+		//console.log(updatedTags.slice())
+		const tagsGivenToThisRecipe = currentUser.tagsGiven[recipe.id].filter(x => !splitTags.includes(x))
+		const updatedTagsGiven = {...currentUser.tagsGiven, [recipe.id]: tagsGivenToThisRecipe} //If undefined initially, just makes an object with one key
+		//console.log(updatedTagsGiven)
+		const updatedCurrentUserForServer = {id: currentUser.id, "tagsGiven": updatedTagsGiven}
+		const updatedCurrentUserForStore = {...currentUser, "tagsGiven": updatedTagsGiven}
+		
+		await userService.update(updatedCurrentUserForServer)
+		dispatch(setCurrentUserAction(updatedCurrentUserForStore))
+		window.localStorage.setItem("currentUser", JSON.stringify(updatedCurrentUserForStore))
+		if (tagsGivenToThisRecipe.length === 0)
+		{
+			setTagged(false)
+		}
+		const updatedRecipe = {...recipe, tags: updatedTags}
+		await recipeService.update(updatedRecipe)
+		setTagsToRemove('')
 	}
 
 	const onQueue = async (event) => {
@@ -384,7 +463,7 @@ export default function RecipePage(props) {
 				<Paper style={{ padding: 16 }} className = {classes.listBackground}  >
 					<Typography align = "center" variant="h4" className={classes.message}>Reviews</Typography>
 					<List className = {classes.root}>
-						{recipe.reviews.map((review, value) =>
+						{reviewsText.map((review, value) =>
 							<div key={value}>
 								<ListItem
 									role={undefined}
@@ -461,16 +540,42 @@ export default function RecipePage(props) {
 				}
 				<br></br>
 				<br></br>
-				<Box mx = {20}>
-					<Paper style={{ padding: 16 }}>
-						<form className={classes.root} noValidate autoComplete="off" onSubmit={addTags}>
-							<TextField fullWidth id="standard-basic-tags" name = "newTags" label="sweet, sour, amazing" onChange={onChange} value={newTags} />
-							<br></br>
-							<br></br>
-							<Button type = "submit" fullWidth variant = "outlined" color = "primary" size = "large">Add Tags</Button>
-						</form>
-					</Paper>
-				</Box>
+				{
+					tagged ?
+						<Box mx = {20}>
+							<Paper style={{ padding: 16 }}>
+								<Container align = "center">
+									<Typography variant = "h5">Your Tags</Typography>
+									<Box fontStyle="italic">
+										<Typography variant = "body1" style = {{wordWrap: "break-word"}}>{currentUser.tagsGiven[recipe.id].join(", ")}</Typography>
+									</Box>
+								</Container>
+								<br></br>
+								<form className={classes.root} noValidate autoComplete="off" onSubmit={addTags}>
+									<TextField fullWidth id="standard-basic-tags" name = "newTags" label="sweet, sour, amazing" onChange={onChange} value={newTags} />
+									<br></br>
+									<br></br>
+									<Button type = "submit" fullWidth variant = "outlined" color = "primary" size = "large">Add Tags</Button>
+								</form>
+								<form className={classes.root} noValidate autoComplete="off" onSubmit={removeTags}>
+									<TextField fullWidth id="standard-basic-tags" name = "tagsToRemove" label="tag you have added" onChange={onChange} value={tagsToRemove} />
+									<br></br>
+									<br></br>
+									<Button type = "submit" fullWidth variant = "outlined" color = "primary" size = "large">Remove Tags</Button>
+								</form>
+							</Paper>
+						</Box> :
+						<Box mx = {20}>
+							<Paper style={{ padding: 16 }}>
+								<form className={classes.root} noValidate autoComplete="off" onSubmit={addTags}>
+									<TextField fullWidth id="standard-basic-tags" name = "newTags" label="sweet, sour, amazing" onChange={onChange} value={newTags} />
+									<br></br>
+									<br></br>
+									<Button type = "submit" fullWidth variant = "outlined" color = "primary" size = "large">Add Tags</Button>
+								</form>
+							</Paper>
+						</Box>
+				}
 				<br></br>
 				<br></br>
 				<Box mx = {20}>

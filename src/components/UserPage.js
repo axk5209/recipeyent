@@ -67,7 +67,7 @@ export default function UserPage ()
 	
 	if (!user)
 		return (<div></div>)
-	user.createdRecipes.length !== 0 ? console.log("Not Empty") : console.log("Empty")
+	//user.createdRecipes.length !== 0 ? //console.log("Not Empty") : //console.log("Empty")
 
 	async function onFollow () {
 		const updatedFollowedUser = {id: user.id, followerCount: user.followerCount+1}

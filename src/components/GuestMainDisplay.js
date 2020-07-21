@@ -67,7 +67,7 @@ const BootstrapInput = withStyles(theme => ({
   }))(InputBase);
 
 const GuestMainDisplay = (props) => {
-	console.log("Main Displayed")
+	//console.log("Main Displayed")
 	const classes = useStyles()
 	let displayPossibilities 
 
