@@ -24,7 +24,7 @@ import TextField from '@material-ui/core/TextField';
 import recipeService from '../services/recipes';
 import userService from '../services/users';
 import { setCurrentUserAction } from "../reducers/currentUser"
-
+import {Image} from "cloudinary-react"
 import {
 	useParams
 } from "react-router-dom"
@@ -55,7 +55,7 @@ export default function UserPage ()
 	const classes = useStyles()
 	const id = useParams().id
 	const user = useSelector(state => state.users.find((item) => item.id === id))
-
+	
 	const currentUser = useSelector(state => state.currentUser)
 	const dispatch = useDispatch()
 
@@ -67,8 +67,8 @@ export default function UserPage ()
 	
 	if (!user)
 		return (<div></div>)
+	console.log(user)
 	//user.createdRecipes.length !== 0 ? //console.log("Not Empty") : //console.log("Empty")
-
 	async function onFollow () {
 		const updatedFollowedUser = {id: user.id, followerCount: user.followerCount+1}
 		const updatedCurrentUserForServer = {id: currentUser.id, followedUsers: currentUser.followedUsers.concat(user.id)}
@@ -105,6 +105,15 @@ export default function UserPage ()
 			<Container align="center">
 				<Typography variant="h2" className={classes.message}>{user.firstName} {user.lastName}</Typography>
 				<Typography variant="h5" className={classes.subheading}>{`${user.followerCount} ${user.followerCount === 1 ? "follower" : "followers"}`}</Typography>
+				<br></br>
+				<Image
+					cloudName = "arham"
+					publicId = {user.pictureId}
+					width = "300"
+					height = "300"
+				>	
+				</Image>
+				<br></br>
 			</Container>
 			<br></br>
 			<Container align = "center">

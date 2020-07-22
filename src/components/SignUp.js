@@ -10,6 +10,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import usersService from "../services/users"
+import uploadsService from "../services/uploads"
+
 import { useDispatch } from 'react-redux'
 import Alert from '@material-ui/lab/alert';
 import {
@@ -19,6 +21,7 @@ import GuestHeader from "./GuestHeader"
 import {
 	Link as LinkRouter
 } from "react-router-dom"
+
 const useStyles = makeStyles((theme) => ({
 	paper: {
 		marginTop: theme.spacing(8),
@@ -37,6 +40,17 @@ const useStyles = makeStyles((theme) => ({
 	submit: {
 		margin: theme.spacing(3, 0, 2),
 	},
+	root: {
+		'& > *': {
+			margin: theme.spacing(1),
+		},
+	},
+	input: {
+		display: 'none',
+	},
+	uploadButton: {
+		backgroundColor: "cyan"
+	},
 }));
 
 export default function SignUp() {
@@ -46,6 +60,9 @@ export default function SignUp() {
 	const [lastName, setLastName] = useState("")
 	const [email, setEmail] = useState("")
 	const [password, setPassword] = useState("")
+	const [pictureInput, setPictureInput] = useState('')
+	const [previewSource, setPreviewSource] = useState('')
+
 	const [errorMessage, setErrorMessage] = useState(null)
 	const history = useHistory()
 	const dispatch = useDispatch()
@@ -76,6 +93,11 @@ export default function SignUp() {
 					setPassword(event.target.value)
 					break
 				}
+			case "picture":
+				{
+					const picture = event.target.files[0]
+					previewPicture(picture)
+				}
 			default:
 				{
 
@@ -83,15 +105,35 @@ export default function SignUp() {
 		}
 	}
 
+	const previewPicture = (picture) => {
+		const reader = new FileReader()
+		reader.readAsDataURL(picture)
+		reader.onloadend = () => {
+			setPreviewSource(reader.result)
+		}
+	}
+
+	const uploadImage = async (base64EncodedImage) => {
+		try {
+			const newFileInfo = await uploadsService.create({file: base64EncodedImage })
+			const pictureId = newFileInfo.pictureId 
+			return pictureId
+		}
+		catch (error) {
+			console.error(error)
+		}
+	}
+
 	//Redirects to login page if successful, otherwise displays error
 	async function onSubmit(event) {
 		event.preventDefault()
-		if (!(username && firstName && lastName && email && password)) {
+		if (!(username && firstName && lastName && email && password && previewSource)) {
 			setErrorMessage('Please fill all the required fields.')
 		}
 		else {
 			try {
-				const userInfo = await usersService.create({ username, firstName, lastName, email, password })
+				const pictureId = await uploadImage(previewSource)
+				const userInfo = await usersService.create({ username, firstName, lastName, email, password, pictureId })
 				history.push("/login")
 			}
 			catch (error) {
@@ -185,6 +227,34 @@ export default function SignUp() {
 									value={email}
 								/>
 							</Grid>
+							<Grid item container xs={12} justify="center" >
+								{
+									previewSource &&
+									<div>
+										<img src={previewSource} alt="chosen" style={{ height: "350px", width: "300px" }} />
+										<br></br>
+										<br></br>
+									</div>
+								}
+								<div className={classes.root}>
+									<input
+										accept="image/*"
+										className={classes.input}
+										id="contained-button-file"
+										multiple
+										type="file"
+										name="picture"
+										onChange={onChange}
+										value={pictureInput}
+									/>
+									<label htmlFor="contained-button-file">
+										<Button variant="contained" className={classes.uploadButton} component="span" color="secondary" align="center">
+											{previewSource ? "Change Pic" : "Upload Pic"}
+										</Button>
+									</label>
+								</div>
+							</Grid>
+
 						</Grid>
 						<Button
 							type="submit"
@@ -194,10 +264,10 @@ export default function SignUp() {
 							className={classes.submit}
 						>
 							Sign Up
-          </Button>
+          				</Button>
 						<Grid container justify="flex-end">
 							<Grid item>
-								<LinkTag  component={LinkRouter} to="/login" variant="body2">
+								<LinkTag component={LinkRouter} to="/login" variant="body2">
 									Already have an account? Login Here
               					</LinkTag>
 							</Grid>

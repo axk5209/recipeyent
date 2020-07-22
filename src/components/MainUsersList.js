@@ -36,7 +36,7 @@ export default function MainUsersList(props) {
 	const displayItems = props.displayItems.map(user => {
 		const name = user.firstName + " " + user.lastName
 		const followerCount = user.followerCount
-		return <div key = {user.id}><MainListUserItem name = {name} followerCount = {followerCount} id = {user.id} username = {user.username}/><br></br></div>
+		return <div key = {user.id}><MainListUserItem name = {name} followerCount = {followerCount} id = {user.id} username = {user.username} pictureId = {user.pictureId}/><br></br></div>
 	})
 	return (
 		<div className={classes.root}>
