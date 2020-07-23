@@ -2,11 +2,22 @@ import React, { Fragment } from 'react'
 import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+	input: {
+		display: 'none',
+	},
+	uploadButton: {
+		backgroundColor: "cyan"
+	},
+}));
 
 // Destructure props
-const SecondStep = ({ handleNext, handleBack, handleChange, values: {ingredients, procedure }, filedError, isError }) => {
+const SecondStep = ({handleNext, handleBack, handleChange, values: {ingredients, procedure, pictureInput, previewSource}, filedError, isError }) => {
 	// Check if all values are not empty
-	const isEmpty = ingredients.length > 0 && procedure.length > 0
+	const classes = useStyles()
+	const isEmpty = ingredients.length > 0 && procedure.length > 0 && previewSource
 	return (
 		<Fragment>
 			<Grid container spacing={2}>
@@ -16,7 +27,7 @@ const SecondStep = ({ handleNext, handleBack, handleChange, values: {ingredients
 						fullWidth
 						label="Ingredients (line-delimited)"
 						name="ingredients"
-						placeholder="2/3 cups of milk, 5 tbs salt"
+						placeholder={"2/3 cups of milk\n5 tbs salt"}
 						defaultValue={ingredients}
 						onChange={handleChange('ingredients')}
 						margin="normal"
@@ -30,9 +41,9 @@ const SecondStep = ({ handleNext, handleBack, handleChange, values: {ingredients
 					<TextField
 						fullWidth
 						multiline
-						label="Procedure (line-delimited: don't number each step)"
+						label="Procedure (line-delimited: don't number steps)"
 						name="procedure"
-						placeholder={"1. Pour milk \n2. Add salt"}
+						placeholder={"Pour milk \nAdd salt"}
 						defaultValue={procedure}
 						onChange={handleChange('procedure')}
 						margin="normal"
@@ -40,6 +51,26 @@ const SecondStep = ({ handleNext, handleBack, handleChange, values: {ingredients
 						helperText={filedError.procedure !== '' ? `${filedError.procedure}` : ''}
 						required
 					/>
+				</Grid>
+
+				<Grid item container xs={12} justify="center" >
+					<div className={classes.root}>
+						<input
+							accept="image/*"
+							className={classes.input}
+							id="contained-button-file"
+							multiple
+							type="file"
+							name="picture"
+							onChange={handleChange("picture")}
+							value={pictureInput}
+						/>
+						<label htmlFor="contained-button-file">
+							<Button variant="contained" className={classes.uploadButton} component="span" color="secondary" align="center">
+								{previewSource ? "Change Pic" : "Upload Pic"}
+							</Button>
+						</label>
+					</div>
 				</Grid>
 			</Grid>
 			<div style={{ display: 'flex', marginTop: 50, justifyContent: 'flex-end' }}>

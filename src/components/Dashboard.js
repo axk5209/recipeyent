@@ -49,11 +49,14 @@ const Dashboard = () => {
 				<Typography variant = "h5" className = {classes.subheading}>Welcome {currentUser.username}!</Typography>
 			</Container> */}
 			<Container align = "center">
-				<Typography variant = "h3" className = {classes.message}>Your Recipes</Typography>
-				<Typography variant="h5" className={classes.subheading}>{`${currentUser.followerCount} followers`}</Typography>
+				<Typography variant = "h3" className = {classes.message}>Hi {currentUser.firstName}!</Typography>
+				<Typography variant="h5">{`You have ${currentUser.followerCount} followers`}</Typography>
 			</Container>
 			<br></br>
+			
+			<br></br>
 			<Container align = "center">
+				<Typography variant = "h3" className = {classes.subheading}>Your Recipes</Typography>
 				<Button variant = "outlined" size = "large" color="primary" component = {Link} to = {"/create"}>
 					<Typography variant = "h5" className = {classes.createButton}>Create New</Typography>
 				</Button>

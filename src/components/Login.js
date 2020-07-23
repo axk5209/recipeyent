@@ -20,7 +20,7 @@ import GoogleButton from 'react-google-button'
 import GuestHeader from "./GuestHeader"
 import recipeService from '../services/recipes';
 import {
-	Link as LinkRouter
+	Link as LinkRouter, useHistory
 } from "react-router-dom"
 const useStyles = makeStyles(theme => ({
 	paper: {
@@ -44,6 +44,7 @@ const useStyles = makeStyles(theme => ({
 
 
 const Login = function (props) {
+	const history = useHistory()
 	const classes = useStyles();
 	const dispatch = useDispatch()
 	const [username, setUsername] = useState("")
@@ -65,9 +66,10 @@ const Login = function (props) {
 		const user = await loginService.login({ username: username, password: password }) //will be null if login doesn't happen
 		if (user) //newUser is not null (login worked correctly)
 		{
-			dispatch(setCurrentUserAction(user))
+			await dispatch(setCurrentUserAction(user))
 			recipeService.setToken(user.token)
 			window.localStorage.setItem("currentUser", JSON.stringify(user))
+			//history.push("/main")
 		}
 		else {
 			setErrorMessage('Invalid credentials. Please try again')

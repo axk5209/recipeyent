@@ -39,14 +39,21 @@ export default function ComplexGrid(props) {
 		<Paper elevation={3} className={classes.paper}>
 			<Grid container spacing={2} align ="left">
 				<Grid item>
-						<ButtonBase className={classes.image}>
-						<Image className = {classes.img}
-							cloudName = "arham"
-							publicId = {props.pictureId}
-							width = "150"
-							height = "150"
-						>	
-						</Image>
+						<ButtonBase className={classes.image} >
+							{/* <img
+								className={classes.img}
+								alt="Chef Hat Image"
+								src={`https://res.cloudinary.com/arham/image/upload/v1/${props.pictureId}`}
+							/> */}
+							<Image className = {classes.img}
+								cloudName = "arham"
+								publicId = {props.pictureId}
+								width = "120"
+								height = "120"
+								radius = "max"
+								gravity="auto:0" 
+							>	
+							</Image> 
 						</ButtonBase>
 				</Grid>
 				<Grid item xs={12} sm container direction = "column">

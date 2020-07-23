@@ -16,7 +16,7 @@ const FirstStep = ({
 	isError
 }) => {
 	// Check if all values are not empty
-	const isEmpty = title.length > 0 && tags.length > 0 && preparationTime.length > 0 && cookTime.length > 0
+	const isEmpty = title.length > 0 && preparationTime.length > 0 && cookTime.length > 0
 
 	return (
 		<Fragment>
@@ -46,8 +46,7 @@ const FirstStep = ({
 						margin="normal"
 						error={filedError.tags !== ''}
 						helperText={filedError.tags !== '' ? `${filedError.tags}` : ''}
-						required
-					/>
+						/>
 				</Grid>
 
 				<Grid item xs={12} sm={6}>

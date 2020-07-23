@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState} from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
@@ -6,7 +6,8 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import { findAllByTitle } from "@testing-library/react";
 import { CardHeader } from "@material-ui/core";
-
+import {Image} from "cloudinary-react"
+import axios from 'axios'
 
 const useStyles = makeStyles(theme => ({
 	card: {
@@ -23,8 +24,17 @@ const useStyles = makeStyles(theme => ({
 	},
 
 }));
-var chefHat = require('./chefHat.jpg')
 function LandingPageRecipeCard(props) {
+	// const [image, setImage] = useState('')
+	// useEffect(() => {
+	// 	async function init()
+	// 	{
+	// 		const response = await axios.get(`https://res.cloudinary.com/arham/image/upload/v1/${props.recipe.pictureId}`)
+	// 		console.log(response)
+	// 		setImage(response.data)
+	// 	}
+	// 	init()
+	// }, [])
 	const classes = useStyles();
 	const recipe = props.recipe
 	const title = `${recipe.title} \u2022 ${recipe.rating ? recipe.rating.toFixed(2): "unrated"}`
@@ -35,7 +45,7 @@ function LandingPageRecipeCard(props) {
 				<CardHeader title = {title} subheader = {tags} />
 				<CardMedia
 					className={classes.media}
-					image={chefHat}
+					image={`https://res.cloudinary.com/arham/image/upload/v1/${props.recipe.pictureId}`}
 				/>
 			</Card>
 		</div>

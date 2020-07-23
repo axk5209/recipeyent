@@ -22,6 +22,7 @@ import TextField from '@material-ui/core/TextField';
 import recipeService from '../services/recipes';
 import userService from '../services/users';
 import { setCurrentUserAction } from "../reducers/currentUser"
+import {Image} from "cloudinary-react"
 
 import {
 	useParams
@@ -287,8 +288,8 @@ export default function RecipePage(props) {
 	}
 	const removeTags = async (event) => {
 		event.preventDefault()
-		console.log(currentUser)
-		console.log(recipe)
+		// console.log(currentUser)
+		// console.log(recipe)
 		let splitTags = tagsToRemove.replace(/\s+/g, '').toLowerCase().split(",")
 		splitTags = splitTags.filter(x => currentUser.tagsGiven[recipe.id].includes(x))
 		//console.log(splitTags)
@@ -383,6 +384,15 @@ export default function RecipePage(props) {
 				<Typography variant="h2" className={classes.message}>{recipe.title}{recipe.rating ? `: ${recipe.rating.toFixed(2)}` : " (unrated)"}</Typography>
 				<Typography variant="h5" className={classes.subheading}>{tags ? tags : "No Tags Yet"}</Typography>
 				<Typography variant="h6">Total Time: {recipe.totalTime} minutes</Typography>
+				<br></br>
+				<Image
+					cloudName = "arham"
+					publicId = {recipe.pictureId}
+					width = "300"
+					height = "300"
+				>	
+				</Image>
+				<br></br>
 			</Container>
 			<br></br>
 
@@ -506,7 +516,7 @@ export default function RecipePage(props) {
 									<TextField fullWidth id="standard-basic-review" name = "newRating" label="Between 1-5..." onChange={onChange} value={newRating} />
 									<br></br>
 									<br></br>
-									<Button type = "submit" fullWidth variant = "outlined" color = "primary" size = "large">Add Rating</Button>
+									<Button type = "submit" fullWidth variant = "outlined" color = "primary" size = "large" disabled = {!(parseFloat(newRating) >= 1 && parseFloat(newRating) <= 5)}>Add Rating</Button>
 								</form>
 							</Paper>
 						</Box> 
@@ -533,7 +543,7 @@ export default function RecipePage(props) {
 									<TextField fullWidth id="standard-basic-rating" name = "newReview" label="This recipe was..." onChange={onChange} value={newReview} />
 									<br></br>
 									<br></br>
-									<Button type = "submit" fullWidth variant = "outlined" color = "primary" size = "large">Add Review</Button>
+									<Button type = "submit" fullWidth variant = "outlined" color = "primary" size = "large" disabled = {newReview.trim().length === 0}>Add Review</Button>
 								</form>
 							</Paper>
 						</Box>
@@ -555,13 +565,13 @@ export default function RecipePage(props) {
 									<TextField fullWidth id="standard-basic-tags" name = "newTags" label="sweet, sour, amazing" onChange={onChange} value={newTags} />
 									<br></br>
 									<br></br>
-									<Button type = "submit" fullWidth variant = "outlined" color = "primary" size = "large">Add Tags</Button>
+									<Button type = "submit" fullWidth variant = "outlined" color = "primary" size = "large" disabled = {newTags.trim().length === 0}>Add Tags</Button>
 								</form>
 								<form className={classes.root} noValidate autoComplete="off" onSubmit={removeTags}>
 									<TextField fullWidth id="standard-basic-tags" name = "tagsToRemove" label="tag you have added" onChange={onChange} value={tagsToRemove} />
 									<br></br>
 									<br></br>
-									<Button type = "submit" fullWidth variant = "outlined" color = "primary" size = "large">Remove Tags</Button>
+									<Button type = "submit" fullWidth variant = "outlined" color = "primary" size = "large" disabled = {tagsToRemove.trim().length === 0}>Remove Tags</Button>
 								</form>
 							</Paper>
 						</Box> :
@@ -571,7 +581,7 @@ export default function RecipePage(props) {
 									<TextField fullWidth id="standard-basic-tags" name = "newTags" label="sweet, sour, amazing" onChange={onChange} value={newTags} />
 									<br></br>
 									<br></br>
-									<Button type = "submit" fullWidth variant = "outlined" color = "primary" size = "large">Add Tags</Button>
+									<Button type = "submit" fullWidth variant = "outlined" color = "primary" size = "large" disabled = {newTags.trim().length === 0}>Add Tags</Button>
 								</form>
 							</Paper>
 						</Box>

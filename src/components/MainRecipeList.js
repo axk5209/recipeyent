@@ -34,7 +34,7 @@ export default function MainRecipeList(props) {
 		const title = recipe.title
 		const author = recipe.author.firstName + ' ' + recipe.author.lastName
 		const tags = recipe.tags.length > 0 ? recipe.tags.sort((a, b) => b.votes - a.votes).slice(0, 5).map(item => item.title).join(", ") : "No Tags Yet"
-		return <div key = {recipe.id}><MainListRecipeItem title = {title} author = {author} tags = {tags} id = {recipe.id} rating = {recipe.rating}/><br></br></div>
+		return <div key = {recipe.id}><MainListRecipeItem title = {title} author = {author} tags = {tags} id = {recipe.id} rating = {recipe.rating} pictureId = {recipe.pictureId}/><br></br></div>
 	})
 	return (
 		<div className={classes.root}>

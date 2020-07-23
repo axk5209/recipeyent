@@ -116,7 +116,11 @@ export default function UserPage ()
 				<br></br>
 			</Container>
 			<br></br>
+
+
 			<Container align = "center">
+				<Typography variant = "h3" className = {classes.subheading}>{`${user.firstName}'s Recipes`}</Typography>
+				<br></br>
 				<CreatedRecipes createdRecipes = {user.createdRecipes}/>					
 				<br></br>
 				<br></br>

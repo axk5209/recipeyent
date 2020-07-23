@@ -8,6 +8,8 @@ import Button from "@material-ui/core/Button";
 import {
 	Link
 } from "react-router-dom"
+import {Image} from "cloudinary-react"
+
 var chefHat = require('./chefHat.jpg')
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -37,12 +39,21 @@ export default function ComplexGrid(props) {
 		<Paper elevation={3} className={classes.paper}>
 			<Grid container spacing={2}>
 				<Grid item>
-					<ButtonBase className={classes.image}>
-						<img
+					<ButtonBase className={classes.image} >
+						{/* <img
 							className={classes.img}
 							alt="Chef Hat Image"
-							src={chefHat}
-						/>
+							src={`https://res.cloudinary.com/arham/image/upload/v1/${props.pictureId}`}
+						/> */}
+						<Image className = {classes.img}
+							cloudName = "arham"
+							publicId = {props.pictureId}
+							width = "120"
+							height = "120"
+							radius = "max"
+							gravity="auto:0" 
+						>	
+						</Image> 
 					</ButtonBase>
 				</Grid>
 				<Grid item xs={12} sm container direction = "column">

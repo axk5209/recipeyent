@@ -7,19 +7,30 @@ import Button from '@material-ui/core/Button'
 import { useDispatch, useSelector } from 'react-redux'
 import recipeService from "../services/recipes"
 import { setCurrentUserAction } from "../reducers/currentUser"
+import uploadsService from "../services/uploads"
 
 // Destructure props
-const Confirm = ({ handleNext, handleBack, values: { title, tags, cookTime, preparationTime, ingredients, procedure } }) => {
+const Confirm = ({ handleNext, handleBack, values: { title, tags, cookTime, preparationTime, ingredients, procedure, previewSource } }) => {
 	const dispatch = useDispatch()
 	const currentUser = useSelector(state => state.currentUser)
-
-
 	const formattedTitle = title
 	const formattedTags = tags.replace(/\n/g, ",").replace(/\s+/g, '').toLowerCase()
-	const formattedCookTime = cookTime
-	const formattedPreparationTime = preparationTime
+	const formattedCookTime = parseInt(cookTime)
+	const formattedPreparationTime = parseInt(preparationTime) 
 	const formattedIngredients = ingredients.split("\n").map(item => `\u2022${item}`).join("\n")
 	const formattedProcedure = procedure.split("\n").map((item, index) => `${index+1}. ${item}`).join("\n")
+
+	const uploadImage = async (base64EncodedImage) => {
+		try {
+			const newFileInfo = await uploadsService.create({file: base64EncodedImage })
+			const pictureId = newFileInfo.pictureId 
+			return pictureId
+		}
+		catch (error) {
+			console.error(error)
+		}
+	}
+
 	async function onConfirm ()
 	{
 		const serviceAuthor = `${currentUser.firstName} ${currentUser.lastName}`
@@ -30,7 +41,7 @@ const Confirm = ({ handleNext, handleBack, values: { title, tags, cookTime, prep
 		const serviceTotalTime = serviceCookTime + servicePreparationTime
 		const serviceIngredients = ingredients.split("\n")
 		const serviceProcedure = procedure.split('\n')
-
+		const servicePictureId = await uploadImage(previewSource)
 		const newRecipe = {
 			author: serviceAuthor,
 			title: serviceTitle,
@@ -38,7 +49,8 @@ const Confirm = ({ handleNext, handleBack, values: { title, tags, cookTime, prep
 			preparationTime: servicePreparationTime,
 			totalTime: serviceTotalTime,
 			ingredients: serviceIngredients,
-			procedure: serviceProcedure
+			procedure: serviceProcedure,
+			pictureId: servicePictureId,
 		}
 		if (serviceTags.length > 0) //If service tags is not an empty array
 		{
@@ -65,7 +77,7 @@ const Confirm = ({ handleNext, handleBack, values: { title, tags, cookTime, prep
 				<Divider />
 
 				<ListItem>
-					<ListItemText primary="Tags" secondary={formattedTags} style = {{wordWrap: "break-word"}} />
+					<ListItemText primary="Tags" secondary={formattedTags.length > 0 ? formattedTags : "No Tags Given"} style = {{wordWrap: "break-word"}} />
 				</ListItem>
 
 				<Divider />
@@ -91,7 +103,17 @@ const Confirm = ({ handleNext, handleBack, values: { title, tags, cookTime, prep
 				<ListItem>
 					<ListItemText primary="Procedure" secondary={formattedProcedure} style = {{wordWrap: "break-word", whiteSpace: 'pre-line'}}/>
 				</ListItem>
-
+				<Divider />
+				<ListItem>
+					<ListItemText primary="Picture"/>					
+				</ListItem>
+				<ListItem>
+					<div>
+						<img src={previewSource} alt="chosen" style={{ height: "300px", width: "300px" }} />
+						<br></br>
+						<br></br>
+					</div>				
+				</ListItem>
 				<Divider />
 			</List>
 
