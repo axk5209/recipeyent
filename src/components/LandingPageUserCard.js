@@ -38,7 +38,6 @@ function LandingPageUserCard(props) {
 	// 	}
 	// 	init()
 	// }, [])
-	console.log(`https://res.cloudinary.com/arham/image/upload/v1/${props.user.pictureId}`)
 	const classes = useStyles();
 	const user = props.user
 	const name = `${user.firstName} ${user.lastName}`
