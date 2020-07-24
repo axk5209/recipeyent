@@ -14,6 +14,8 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import InputBase from "@material-ui/core/InputBase";
 import HomeHeaderButtons from './HomeHeaderButtons'
+import TextField from "@material-ui/core/TextField";
+import Box from "@material-ui/core/Box";
 const useStyles = makeStyles((theme) => ({
 	createButton: {
 		flexGrow: 1,
@@ -86,18 +88,15 @@ const GuestMainDisplay = (props) => {
 	displayPossibilities = [topRecipes, topUsers]
 	
 	const [view, setView] = React.useState(props.view ? props.view : 0);
-	const [displayItems, setDisplayItems] = useState(displayPossibilities[view])
-
-
-	useEffect(() => {
-		setDisplayItems(displayPossibilities[view])
-	}, [displayPossibilities])
+	const [search, setSearch] = useState('')
 
 	const handleChange = event => {
 		setView(event.target.value);
-		setDisplayItems(displayPossibilities[event.target.value])
 	};
 
+	function onChangeSearch(event) {
+		setSearch(event.target.value)
+	}
 	return (
 		<div>
 			<LoggedInHeader>
@@ -105,23 +104,32 @@ const GuestMainDisplay = (props) => {
 			</LoggedInHeader>
 			<br></br>
 			<Container align = "center">
-				<Typography display = "inline" variant = "h4" className = {classes.message}>View: </Typography>
-				<FormControl>
-					<Select
-					labelId="demo-customized-select-label"
-					id="demo-customized-select"
-					value={view}
-					onChange={handleChange}
-					input={<BootstrapInput />}
-					>
-						<MenuItem value={0}>Top Recipes</MenuItem>
-						<MenuItem value={1}>Top Users</MenuItem>
-					</Select>
-				</FormControl>
+				<Box height={6} mx={0.5} width={120} display="inline">
+					<div>
+						<Typography display="inline" variant="h4" className={classes.message}>Search: </Typography>
+						<TextField variant = "outlined" onChange = {onChangeSearch} value = {search}placeholder = "Some Name..." />
+					</div>
+					<br></br>
+					<div>
+						<Typography display = "inline" variant = "h4" className = {classes.message}>View: </Typography>
+						<FormControl>
+							<Select
+							labelId="demo-customized-select-label"
+							id="demo-customized-select"
+							value={view}
+							onChange={handleChange}
+							input={<BootstrapInput />}
+							>
+								<MenuItem value={0}>Top Recipes</MenuItem>
+								<MenuItem value={1}>Top Users</MenuItem>
+							</Select>
+						</FormControl>
+					</div>
+				</Box>
 			</Container>
 			<br></br>
-			{!(view === 1) && <MainRecipeList displayItems = {displayItems}/>}
-			{(view === 1) && <MainUsersList displayItems = {displayItems}/>}
+			{!(view === 1) && <MainRecipeList displayItems={displayPossibilities[view].filter(item => (item.title.toLowerCase().includes(search.toLowerCase()) || item.tags.find(tag => tag.title.includes(search.toLowerCase()))))}/>}
+			{(view === 1) && <MainUsersList displayItems={displayPossibilities[view].filter(item => (item.firstName.toLowerCase().includes(search.toLowerCase()) || item.lastName.toLowerCase().includes(search.toLowerCase())))}/>}
 			<br></br>
 			<br></br>
 		</div>

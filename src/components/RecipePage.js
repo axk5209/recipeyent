@@ -154,11 +154,10 @@ export default function RecipePage(props) {
 		// console.log(recipe.rating)
 		// console.log(recipe.ratingCount)
 		// console.log(newRating)
-
+			
 		const updatedReviewsGiven = {...currentUser.reviewsGiven, [recipe.id]: newReview} //If undefined initially, just makes an object with one key
 		const updatedCurrentUserForServer = {id: currentUser.id, "reviewsGiven": updatedReviewsGiven}
 		const updatedCurrentUserForStore = {...currentUser, "reviewsGiven": updatedReviewsGiven}
-		setReviewed(true)
 		await userService.update(updatedCurrentUserForServer)
 		dispatch(setCurrentUserAction(updatedCurrentUserForStore))
 		window.localStorage.setItem("currentUser", JSON.stringify(updatedCurrentUserForStore))
@@ -166,6 +165,7 @@ export default function RecipePage(props) {
 		const updatedRecipe = {...recipe, reviews: recipe.reviews.concat({userId: currentUser.id, text: newReview})}
 		await recipeService.update(updatedRecipe)
 		dispatch(updateRecipeInStoreAction(updatedRecipe))
+		setReviewed(true)
 		setNewReview('')
 	}
 	const addRating = async (event) => {

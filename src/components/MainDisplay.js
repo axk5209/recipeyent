@@ -203,8 +203,8 @@ const MainDisplay = () => {
 				{/* <SearchBar></SearchBar> */}				
 				
 			</Container>
-			{!(view === 1 || view == 2) && <MainRecipeList displayItems={displayPossibilities[view].filter(item => (item.title.includes(search) || item.tags.includes(search)))}/>}
-			{(view === 1 || view == 2) && <MainUsersList displayItems={displayPossibilities[view].filter(item => (item.firstName.includes(search) || item.lastName.includes(search)))} />}
+			{!(view === 1 || view == 2) && <MainRecipeList displayItems={displayPossibilities[view].filter(item => (item.title.toLowerCase().includes(search.toLowerCase()) || item.tags.find(tag => tag.title.includes(search.toLowerCase()))))}/>}
+			{(view === 1 || view == 2) && <MainUsersList displayItems={displayPossibilities[view].filter(item => (item.firstName.toLowerCase().includes(search.toLowerCase()) || item.lastName.toLowerCase().includes(search.toLowerCase())))} />}
 			<br></br>
 			<br></br>
 		</div>
