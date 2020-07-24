@@ -11,7 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import usersService from "../services/users"
 import uploadsService from "../services/uploads"
-
+import {addUserToStoreAction } from "../reducers/users"
 import { useDispatch } from 'react-redux'
 import Alert from '@material-ui/lab/alert';
 import {
@@ -134,6 +134,7 @@ export default function SignUp() {
 			try {
 				const pictureId = await uploadImage(previewSource)
 				const userInfo = await usersService.create({ username, firstName, lastName, email, password, pictureId })
+				dispatch(addUserToStoreAction(userInfo))
 				history.push("/login")
 			}
 			catch (error) {

@@ -22,6 +22,8 @@ import TextField from '@material-ui/core/TextField';
 import recipeService from '../services/recipes';
 import userService from '../services/users';
 import { setCurrentUserAction } from "../reducers/currentUser"
+import {updateRecipeInStoreAction } from "../reducers/recipes"
+
 import {Image} from "cloudinary-react"
 
 import {
@@ -163,6 +165,7 @@ export default function RecipePage(props) {
 
 		const updatedRecipe = {...recipe, reviews: recipe.reviews.concat({userId: currentUser.id, text: newReview})}
 		await recipeService.update(updatedRecipe)
+		dispatch(updateRecipeInStoreAction(updatedRecipe))
 		setNewReview('')
 	}
 	const addRating = async (event) => {
@@ -190,6 +193,7 @@ export default function RecipePage(props) {
 		//console.log(updatedCurrentUserForStore)
 		const updatedRecipe = {...recipe, ratingCount: recipe.ratingCount+1, rating: updatedRating}
 		await recipeService.update(updatedRecipe)
+		dispatch(updateRecipeInStoreAction(updatedRecipe))
 		//console.log(updatedRecipe)
 		setRated(true)
 		setNewRating('')
@@ -215,6 +219,7 @@ export default function RecipePage(props) {
 
 		const updatedRecipe = {...recipe, ratingCount: recipe.ratingCount-1, rating: updatedRating}
 		await recipeService.update(updatedRecipe)
+		dispatch(updateRecipeInStoreAction(updatedRecipe))
 	}
 	const removeReview = async (event) => {
 		const currentReviewGiven = currentUser.reviewsGiven[id]
@@ -233,6 +238,7 @@ export default function RecipePage(props) {
 		//console.log(updatedRecipeReviews)
 		const updatedRecipe = {...recipe, reviews: updatedRecipeReviews}
 		await recipeService.update(updatedRecipe)
+		dispatch(updateRecipeInStoreAction(updatedRecipe))
 	}
 	const addTags = async (event) => {
 		event.preventDefault()
@@ -241,7 +247,10 @@ export default function RecipePage(props) {
 			return
 		}
 		const updatedTags = recipe.tags.slice() //has votes
+		//console.log(updatedTags.slice())
 		let splitTags = newTags.replace(/\s+/g, '').toLowerCase().split(",") //no votes
+
+		const oldTagsLength = currentUser.tagsGiven ? (currentUser.tagsGiven[recipe.id] ? currentUser.tagsGiven[recipe.id].keys().length : 0) : 0
 
 		if (currentUser.tagsGiven && currentUser.tagsGiven[recipe.id])
 		{
@@ -277,13 +286,14 @@ export default function RecipePage(props) {
 		await userService.update(updatedCurrentUserForServer)
 		dispatch(setCurrentUserAction(updatedCurrentUserForStore))
 		window.localStorage.setItem("currentUser", JSON.stringify(updatedCurrentUserForStore))
-		if (splitTags.length === 1)
+		if (oldTagsLength === 0)
 		{
 			setTagged(true)
 		}
-		
+		//console.log(updatedTags.slice())
 		const updatedRecipe = {...recipe, tags: updatedTags}
 		await recipeService.update(updatedRecipe)
+		dispatch(updateRecipeInStoreAction(updatedRecipe))
 		setNewTags('')
 	}
 	const removeTags = async (event) => {
@@ -329,6 +339,7 @@ export default function RecipePage(props) {
 		}
 		const updatedRecipe = {...recipe, tags: updatedTags}
 		await recipeService.update(updatedRecipe)
+		dispatch(updateRecipeInStoreAction(updatedRecipe))
 		setTagsToRemove('')
 	}
 

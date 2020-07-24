@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import recipeService from "../services/recipes"
 import { setCurrentUserAction } from "../reducers/currentUser"
 import uploadsService from "../services/uploads"
+import { addRecipeToStoreAction } from "../reducers/recipes"
 
 // Destructure props
 const Confirm = ({ handleNext, handleBack, values: { title, tags, cookTime, preparationTime, ingredients, procedure, previewSource } }) => {
@@ -35,7 +36,9 @@ const Confirm = ({ handleNext, handleBack, values: { title, tags, cookTime, prep
 	{
 		const serviceAuthor = `${currentUser.firstName} ${currentUser.lastName}`
 		const serviceTitle = title
-		const serviceTags = tags.replace(/\s+/g, '').toLowerCase().split(",").map(item => ({title: item, votes: 1}))
+		const serviceTags = tags.replace(/\s+/g, '').toLowerCase().split(",").filter(item => item !== '').map(item => ({title: item, votes: 1}))
+		console.log(tags.slice())
+		console.log(serviceTags.slice())
 		const serviceCookTime = parseInt(cookTime)
 		const servicePreparationTime = parseInt(preparationTime) 
 		const serviceTotalTime = serviceCookTime + servicePreparationTime
@@ -43,7 +46,6 @@ const Confirm = ({ handleNext, handleBack, values: { title, tags, cookTime, prep
 		const serviceProcedure = procedure.split('\n')
 		const servicePictureId = await uploadImage(previewSource)
 		const newRecipe = {
-			author: serviceAuthor,
 			title: serviceTitle,
 			cookTime: serviceCookTime,
 			preparationTime: servicePreparationTime,
@@ -52,11 +54,13 @@ const Confirm = ({ handleNext, handleBack, values: { title, tags, cookTime, prep
 			procedure: serviceProcedure,
 			pictureId: servicePictureId,
 		}
+		
 		if (serviceTags.length > 0) //If service tags is not an empty array
 		{
 			newRecipe.tags = serviceTags
 		}
 		const createdRecipe = await recipeService.create(newRecipe)
+		dispatch(addRecipeToStoreAction({...createdRecipe, author: {firstName: currentUser.firstName, lastName: currentUser.lastName, id: currentUser.id}}))
 		const updatedUserForStore = {...currentUser, createdRecipes: currentUser.createdRecipes.concat(createdRecipe)}
 		dispatch(setCurrentUserAction(updatedUserForStore))
 		window.localStorage.setItem("currentUser", JSON.stringify(updatedUserForStore))

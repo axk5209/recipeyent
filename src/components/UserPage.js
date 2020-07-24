@@ -24,6 +24,8 @@ import TextField from '@material-ui/core/TextField';
 import recipeService from '../services/recipes';
 import userService from '../services/users';
 import { setCurrentUserAction } from "../reducers/currentUser"
+import { updateUserInStoreAction } from "../reducers/users"
+
 import {Image} from "cloudinary-react"
 import {
 	useParams
@@ -67,24 +69,33 @@ export default function UserPage ()
 	
 	if (!user)
 		return (<div></div>)
-	console.log(user)
+	//console.log(user)
 	//user.createdRecipes.length !== 0 ? //console.log("Not Empty") : //console.log("Empty")
 	async function onFollow () {
-		const updatedFollowedUser = {id: user.id, followerCount: user.followerCount+1}
+		const updatedFollowedUserForServer = {id: user.id, followerCount: user.followerCount+1}
+		const updatedFollowedUserForStore = {...user, followerCount: user.followerCount+1}
 		const updatedCurrentUserForServer = {id: currentUser.id, followedUsers: currentUser.followedUsers.concat(user.id)}
 		const updatedCurrentUserForStore = {...currentUser, followedUsers: currentUser.followedUsers.concat(user.id)}
-		await userService.update(updatedFollowedUser)
+
+		await userService.update(updatedFollowedUserForServer)
+		dispatch(updateUserInStoreAction(updatedFollowedUserForStore))
+
 		await userService.update(updatedCurrentUserForServer)
 		dispatch(setCurrentUserAction(updatedCurrentUserForStore))
+
 		setFollowed(true)
 		window.localStorage.setItem("currentUser", JSON.stringify(updatedCurrentUserForStore))
 	}
 
 	const onUnfollow = async (event) => {
-		const updatedFollowedUser = {id: user.id, followerCount: user.followerCount-1}
+		const updatedFollowedUserForServer = {id: user.id, followerCount: user.followerCount-1}
+		const updatedFollowedUserForStore = {...user, followerCount: user.followerCount-1}
 		const updatedCurrentUserForServer = {id: currentUser.id, followedUsers: currentUser.followedUsers.filter(id => id !== user.id)}
 		const updatedCurrentUserForStore = {...currentUser, followedUsers: currentUser.followedUsers.filter(id => id !== user.id)}
-		await userService.update(updatedFollowedUser)
+
+		await userService.update(updatedFollowedUserForServer)
+		dispatch(updateUserInStoreAction(updatedFollowedUserForStore))
+
 		await userService.update(updatedCurrentUserForServer)
 		dispatch(setCurrentUserAction(updatedCurrentUserForStore))
 		setFollowed(false)

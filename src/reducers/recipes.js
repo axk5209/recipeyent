@@ -1,6 +1,26 @@
 import recipeService from "../services/recipes"
 const {create, getAll} = recipeService
-export const addRecipeAction = function (recipe) //action creator
+
+export const updateRecipeInStoreAction = function (recipeObject) //action creator
+{
+	return async dispatch => {
+		dispatch({
+			type: 'UPDATERECIPE',
+			data: {recipeObject}
+		})
+	}
+}
+
+export const addRecipeToStoreAction = function (recipeObject) //action creator
+{
+	return async dispatch => {
+		dispatch({
+			type: 'ADDRECIPE',
+			data: {recipeObject}
+		})
+	}
+}
+export const addRecipeAction = function (recipe, author) //action creator
 {
 	return async dispatch => {
 		//console.log("dispatch add recipe")
@@ -8,7 +28,7 @@ export const addRecipeAction = function (recipe) //action creator
 		const recipeObject = await create(recipe) //Concats new recipe to recipelist
 		dispatch({
 			type: 'ADDRECIPE',
-			data: {recipeObject: recipeObject }
+			data: {recipeObject: {...recipeObject, author}}
 		})
 	}
 }
@@ -28,6 +48,11 @@ export const addRecipe = (initialRecipes, recipeObject) => {
 	return initialRecipes.concat(recipeObject)
 }
 
+export const updateRecipe = (initialRecipes, recipeObject) => {
+	return initialRecipes.map(oldRecipe => oldRecipe.id === recipeObject.id ? recipeObject : oldRecipe)
+}
+
+
 
 const initialState = []
 
@@ -40,6 +65,10 @@ const reducer = (state = initialState, action) => {
 		case 'INITIALIZERECIPES':
 			{
 				return action.data.recipes
+			}
+		case 'UPDATERECIPE':
+			{
+				return updateRecipe(state, action.data.recipeObject)
 			}
 		default:
 			{

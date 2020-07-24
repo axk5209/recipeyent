@@ -1,6 +1,29 @@
 import usersService from "../services/users"
 const {create, getAll} = usersService
 
+
+export const updateUserInStoreAction = function (userObject) //action creator
+{
+	return async dispatch => {
+		dispatch({
+			type: 'UPDATEUSER',
+			data: {userObject}
+		})
+	}
+}
+
+export const addUserToStoreAction = function (userObject) //action creator
+{
+	return async dispatch => {
+		//console.log("dispatch add user")
+		//console.log(user)
+		dispatch({
+			type: 'ADDUSER',
+			data: {userObject: userObject }
+		})
+	}
+}
+
 export const User = function (user) //action creator
 {
 	return async dispatch => {
@@ -29,6 +52,13 @@ export const addUser = (initialUsers, userObject) => {
 }
 
 
+
+export const updateUser = (initialUsers, userObject) => {
+	//console.log(userObject)
+	return initialUsers.map(oldUser => oldUser.id === userObject.id ? userObject : oldUser)
+}
+
+
 const initialState = []
 
 const reducer = (state = initialState, action) => {
@@ -42,6 +72,10 @@ const reducer = (state = initialState, action) => {
 				//console.log("USER REDUCER BEING ACCESSED")
 				return action.data.users
 			}
+		case 'UPDATEUSER':
+		{
+			return updateUser(state, action.data.userObject)
+		}
 		default:
 			{
 				return state

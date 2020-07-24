@@ -30,6 +30,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function MainRecipeList(props) {
 	const classes = useStyles();
+	//console.log(props)
 	const displayItems = props.displayItems.map(recipe => {
 		const title = recipe.title
 		const author = recipe.author.firstName + ' ' + recipe.author.lastName
