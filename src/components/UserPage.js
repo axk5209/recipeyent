@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
@@ -66,6 +66,9 @@ export default function UserPage ()
 			(currentUser.followedUsers.find(item => item === id) ? true : false) :
 			false
 	);
+	useEffect(() => {
+		window.scrollTo(0,0)
+	}, [])
 	
 	if (!user)
 		return (<div></div>)

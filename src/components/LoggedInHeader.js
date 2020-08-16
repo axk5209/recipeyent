@@ -7,7 +7,12 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import MenuIcon from '@material-ui/icons/Menu';
+import {
+	Link
+} from "react-router-dom"
+import LinkTag from '@material-ui/core/Link';
 
+var HeaderLogo = require('./headerLogo.png')
 const useStyles = makeStyles((theme) => ({
 	root: {
 		flexGrow: 1,
@@ -29,9 +34,13 @@ export default function LoggedInHeader(props) {
 			<AppBar position="static">
 				<CssBaseline />
 				<Toolbar>
+					<LinkTag component={Link} to="/main">
+						<img src={HeaderLogo} style ={{maxWidth: "60px"}}/>
+					</LinkTag>
 					<Typography variant="h4" className={classes.title}>
-						Recipeyent
-          		</Typography>&nbsp;
+						ecipeyent
+					</Typography>
+					&nbsp;
 				{props.children}
 				</Toolbar>
 			</AppBar>

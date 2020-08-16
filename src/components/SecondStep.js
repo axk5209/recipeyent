@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
 		display: 'none',
 	},
 	uploadButton: {
-		backgroundColor: "cyan"
+		backgroundColor: "blue"
 	},
 }));
 

@@ -55,7 +55,7 @@ const App = () => {
 
 
 	return (
-		<Router>
+		<Router >
 			{!storeUser && <NotLoggedIn />}
 			{storeUser && <LoggedIn />} {/*No matter what is put after localhost:3000, page is directed to login page because there are no routers for the rest of the url*/}
 		</Router>

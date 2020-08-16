@@ -39,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	submit: {
 		margin: theme.spacing(3, 0, 2),
+		fontWeight: "bold",
 	},
 	root: {
 		'& > *': {
@@ -49,8 +50,22 @@ const useStyles = makeStyles((theme) => ({
 		display: 'none',
 	},
 	uploadButton: {
+		fontWeight: "bold",
 		backgroundColor: "cyan"
 	},
+	buttonBar: {
+		[theme.breakpoints.down("xs")]: {
+			display: "none"
+		},
+		marginLeft: "24px",
+		marginRight: "0px",
+		color: "white",
+		fontWeight: "bold",
+		"&:hover": {
+			//you want this to be the same as the backgroundColor above
+			backgroundColor: "#8359ff"
+		}
+	}
 }));
 
 export default function SignUp() {
@@ -147,8 +162,9 @@ export default function SignUp() {
 		<React.Fragment>
 			<CssBaseline />
 			<GuestHeader>
-				<Button component={LinkRouter} to={"/home"} variant="contained" className={classes.menuButton}>Home</Button>
+				<Button component = {LinkRouter} to="/home"  className={classes.buttonBar}>Home</Button>
 			</GuestHeader>
+
 			<Container component="main" maxWidth="xs">
 
 				<div className={classes.paper}>
@@ -249,7 +265,7 @@ export default function SignUp() {
 										value={pictureInput}
 									/>
 									<label htmlFor="contained-button-file">
-										<Button variant="contained" className={classes.uploadButton} component="span" color="secondary" align="center">
+										<Button variant="contained" className={classes.uploadButton} component="span" color="inherit" align="center">
 											{previewSource ? "Change Pic" : "Upload Pic"}
 										</Button>
 									</label>
@@ -274,6 +290,14 @@ export default function SignUp() {
 							</Grid>
 						</Grid>
 					</form>
+					<br></br>
+					<br></br>
+					<br></br>
+					<br></br>
+					<br></br>
+					<br></br>
+					<br></br>
+
 				</div>
 			</Container>
 		</React.Fragment>

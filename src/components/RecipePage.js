@@ -85,7 +85,9 @@ export default function RecipePage(props) {
 	const [tagged, setTagged] = useState (
 		currentUser && currentUser.tagsGiven && currentUser.tagsGiven[id] && currentUser.tagsGiven[id].length > 0
 	);
-	
+	useEffect(() => {
+		window.scrollTo(0,0)
+	}, [])
 	// useEffect(() => {
 	// 	setQueued(currentUser ? 
 	// 		(currentUser.queuedRecipes.find(item => item.id) ? true : false) :
@@ -98,7 +100,7 @@ export default function RecipePage(props) {
 	//currentUser && console.log(currentUser.reviewsGiven)
 	//console.log(rated)
 
-
+	
 	const tags = recipe.tags.sort((a, b) => b.votes - a.votes).slice(0, 5).map(item => item.title).join(", ")
 	const reviewsText = recipe.reviews.map(review => review.text)
 	const procedureList = recipe.procedure

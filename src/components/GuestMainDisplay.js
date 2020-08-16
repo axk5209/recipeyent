@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import LoggedInHeader from './LoggedInHeader'
+import GuestHeader from './GuestHeader'
 import MainRecipeList from './MainRecipeList'
 import MainUsersList from './MainUsersList'
 
@@ -89,7 +89,9 @@ const GuestMainDisplay = (props) => {
 	
 	const [view, setView] = React.useState(props.view ? props.view : 0);
 	const [search, setSearch] = useState('')
-
+	useEffect(() => {
+		window.scrollTo(0,0)
+	}, [])
 	const handleChange = event => {
 		setView(event.target.value);
 	};
@@ -99,9 +101,9 @@ const GuestMainDisplay = (props) => {
 	}
 	return (
 		<div>
-			<LoggedInHeader>
+			<GuestHeader>
 				<HomeHeaderButtons/>
-			</LoggedInHeader>
+			</GuestHeader>
 			<br></br>
 			<Container align = "center">
 				<Box height={6} mx={0.5} width={120} display="inline">

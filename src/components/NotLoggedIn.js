@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Login from './Login'
 import SignUp from './SignUp'
 import LandingPage from './LandingPage'
@@ -10,7 +10,10 @@ import {
 import UserPage from './UserPage'
 import GuestMainDisplay from './GuestMainDisplay'
 const NotLoggedIn = () => {
+
 	return (
+
+
 		<Switch>
 			<Route path="/login">
 				<Login />

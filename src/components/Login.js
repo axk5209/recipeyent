@@ -40,6 +40,19 @@ const useStyles = makeStyles(theme => ({
 	submit: {
 		margin: theme.spacing(3, 0, 2),
 	},
+	buttonBar: {
+		[theme.breakpoints.down("xs")]: {
+			display: "none"
+		},
+		marginLeft: "24px",
+		marginRight: "0px",
+		color: "white",
+		fontWeight: "bold",
+		"&:hover": {
+			//you want this to be the same as the backgroundColor above
+			backgroundColor: "#8359ff"
+		}
+	}
 }));
 
 
@@ -89,7 +102,7 @@ const Login = function (props) {
 		<CssBaseline></CssBaseline>
 		
 		<GuestHeader> 
-			<Button component={LinkRouter} to={"/home"} variant="contained" className={classes.menuButton}>Home</Button>
+			<Button component={LinkRouter} to={"/home"} color = "inherit" className={classes.buttonBar}>Home</Button>
 		</GuestHeader>
 		<Container component="main" maxWidth="xs">
 			<div className={classes.paper}>
@@ -154,6 +167,13 @@ const Login = function (props) {
 						</Grid>
 					</Grid>
 				</form>
+				<br></br>
+				<br></br>
+				<br></br>
+				<br></br>
+				<br></br>
+				<br></br>
+				<br></br>
 			</div>
 		</Container>
 		</React.Fragment>

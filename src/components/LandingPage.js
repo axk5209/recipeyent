@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import LoggedInHeader from './LoggedInHeader'
 import GuestHeader from './GuestHeader'
 import { Typography, CssBaseline } from '@material-ui/core'
@@ -41,14 +41,16 @@ const MainDisplay = () => {
 		//console.log(state)
 		return state.recipes ? state.recipes: null
 	})
-
+	useEffect(() => {
+		window.scrollTo(0,0)
+	}, [])
 	if (allUsers.length === 0 || allRecipes.length == 0)
 		return <div></div>
 
 	//console.log(allUsers)
 	const topRecipes = allRecipes.sort((a, b) => b.rating - a.rating).slice(0, 4)
 	const topUsers = allUsers.sort((a, b) => b.followerCount - a.followerCount).slice(0, 4)
-
+	
 	return (
 		<React.Fragment>
 			<CssBaseline />
