@@ -7,7 +7,11 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import MenuIcon from '@material-ui/icons/Menu';
+import Container from '@material-ui/core/Container';
 
+import {
+	Link
+} from "react-router-dom"
 const useStyles = makeStyles((theme) => ({
 	root: {
 		flexGrow: 1,
@@ -29,9 +33,12 @@ export default function GuestHeader(props) {
 			<AppBar position="static">
 				<CssBaseline />
 				<Toolbar>
-					<Typography variant="h4" className={classes.title}>
-						Recipeyent
-          		</Typography>&nbsp;
+					<Container align = "left" maxWidth = "sm">
+						<Typography variant="h4" className={classes.title} component = {Link} to = "/home" maxWidth = "sm">
+								Recipeyent
+						</Typography>
+					</Container>
+					&nbsp;
 				{props.children}
 				</Toolbar>
 			</AppBar>

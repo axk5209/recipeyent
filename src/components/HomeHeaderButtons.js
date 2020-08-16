@@ -14,7 +14,13 @@ const useStyles = makeStyles(theme => ({
 			display: "none"
 		},
 		marginLeft: "24px",
-		marginRight: "0px"
+		marginRight: "0px",
+		color: "white",
+		fontWeight: "bold",
+		"&:hover": {
+			//you want this to be the same as the backgroundColor above
+			backgroundColor: "#8359ff"
+		}
 	}
 }));
 
@@ -27,8 +33,8 @@ export default function HomeHeaderButtons() {
 				<MenuItem>Sign Up</MenuItem>
 			</ButtonAppBarCollapse>
 			<div>
-				<Button component = {Link} to="/login" variant="contained"  className={classes.buttonBar}>Login</Button>
-				<Button component = {Link} to="/signup" variant="contained" className={classes.buttonBar}>Sign up</Button>
+				<Button component = {Link} to="/login"  className={classes.buttonBar}>Login</Button>
+				<Button component = {Link} to="/signup" className={classes.buttonBar}>Sign up</Button>
 			</div>
 		</div>
 	)

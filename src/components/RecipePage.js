@@ -390,7 +390,6 @@ export default function RecipePage(props) {
 				</GuestHeader>
 			}
 			{}
-			<br></br>
 			<Container align="center">
 				<Typography variant="h2" className={classes.message}>{recipe.title}{recipe.rating ? `: ${recipe.rating.toFixed(2)}` : " (unrated)"}</Typography>
 				<Typography variant="h5" className={classes.subheading}>{tags ? tags : "No Tags Yet"}</Typography>
@@ -407,8 +406,8 @@ export default function RecipePage(props) {
 			</Container>
 			<br></br>
 
-			<Box mx = {20}>
-				<Paper className = {classes.listBackground} >
+			<Container align = "center" maxWidth = "md">
+				<Paper style={{ padding: 16 }} className = {classes.listBackground}  >
 					<Typography align = "center" variant="h4" className={classes.message}>Ingredients</Typography>
 					<List className = {classes.root}>
 						{recipe.ingredients.map((ingredient, value) => {
@@ -436,7 +435,7 @@ export default function RecipePage(props) {
 						})}
 					</List>
 				</Paper>
-			</Box>
+			</Container>
 
 			
 
@@ -444,8 +443,8 @@ export default function RecipePage(props) {
 
 			<br></br>
 			<br></br>
-			<Box mx = {20}>
-				<Paper className = {classes.listBackground} >
+			<Container align = "center" maxWidth = "md">
+				<Paper style={{ padding: 16 }} className = {classes.listBackground}  >
 					<Typography align = "center" variant="h4" className={classes.message}>Procedure</Typography>
 					<List className = {classes.root}>
 						{procedureList.map((step, value) => {
@@ -476,11 +475,11 @@ export default function RecipePage(props) {
 						})}
 					</List>
 				</Paper>
-			</Box>
+			</Container>
 
 			<br></br>
 			<br></br>
-			<Box mx = {20}>
+			<Container align = "center" maxWidth = "md">
 				<Paper style={{ padding: 16 }} className = {classes.listBackground}  >
 					<Typography align = "center" variant="h4" className={classes.message}>Reviews</Typography>
 					<List className = {classes.root}>
@@ -500,7 +499,7 @@ export default function RecipePage(props) {
 						)}	
 					</List>
 				</Paper>
-			</Box>
+			</Container>
 			<br></br>
 			<br></br>
 			{(currentUser && recipe.author.id !== currentUser.id) && 
@@ -511,8 +510,8 @@ export default function RecipePage(props) {
 				<br></br>
 				{
 					rated ?
-						<Box mx = {20}>
-							<Paper style={{ padding: 16 }}>
+						<Container align = "center" maxWidth = "md">
+							<Paper style={{ padding: 16 }} className = {classes.listBackground}  >
 								<Container align = "center">
 									<Typography variant = "h5" display = "inline">Your Rating: </Typography>
 									<Typography variant = "h5" display = "inline" style = {{fontWeight: "bold"}}>{currentUser.ratingsGiven[id].toFixed(2)}</Typography>
@@ -520,9 +519,9 @@ export default function RecipePage(props) {
 								<br></br>
 								<Button fullWidth variant = "outlined" color = "primary" size = "large" onClick = {removeRating}>Remove Rating</Button>
 							</Paper>
-						</Box> :
-						<Box mx = {20}>
-							<Paper style={{ padding: 16 }}>
+						</Container> :
+						<Container align = "center" maxWidth = "md">
+							<Paper style={{ padding: 16 }} className = {classes.listBackground}  >
 								<form className={classes.root} noValidate autoComplete="off" onSubmit={addRating}>
 									<TextField fullWidth id="standard-basic-review" name = "newRating" label="Between 1-5..." onChange={onChange} value={newRating} />
 									<br></br>
@@ -530,14 +529,14 @@ export default function RecipePage(props) {
 									<Button type = "submit" fullWidth variant = "outlined" color = "primary" size = "large" disabled = {!(parseFloat(newRating) >= 1 && parseFloat(newRating) <= 5)}>Add Rating</Button>
 								</form>
 							</Paper>
-						</Box> 
+						</Container> 
 				}
 				<br></br>
 				<br></br>
 				{
 					reviewed ?
-						<Box mx = {20}>
-							<Paper style={{ padding: 16 }}>
+						<Container align = "center" maxWidth = "md">
+							<Paper style={{ padding: 16 }} className = {classes.listBackground}  >
 								<Container align = "center">
 									<Typography variant = "h5">Your Review</Typography>
 									<Box fontStyle="italic">
@@ -547,9 +546,9 @@ export default function RecipePage(props) {
 								<br></br>
 								<Button fullWidth variant = "outlined" color = "primary" size = "large" onClick = {removeReview}>Remove Review</Button>
 							</Paper>
-						</Box>:
-						<Box mx = {20}>
-							<Paper style={{ padding: 16 }}>
+						</Container>:
+						<Container align = "center" maxWidth = "md">
+							<Paper style={{ padding: 16 }} className = {classes.listBackground}  >
 								<form className={classes.root} noValidate autoComplete="off" onSubmit={addReview}>
 									<TextField fullWidth id="standard-basic-rating" name = "newReview" label="This recipe was..." onChange={onChange} value={newReview} />
 									<br></br>
@@ -557,14 +556,14 @@ export default function RecipePage(props) {
 									<Button type = "submit" fullWidth variant = "outlined" color = "primary" size = "large" disabled = {newReview.trim().length === 0}>Add Review</Button>
 								</form>
 							</Paper>
-						</Box>
+						</Container>
 				}
 				<br></br>
 				<br></br>
 				{
 					tagged ?
-						<Box mx = {20}>
-							<Paper style={{ padding: 16 }}>
+						<Container align = "center" maxWidth = "md">
+							<Paper style={{ padding: 16 }} className = {classes.listBackground}  >
 								<Container align = "center">
 									<Typography variant = "h5">Your Tags</Typography>
 									<Box fontStyle="italic">
@@ -585,9 +584,9 @@ export default function RecipePage(props) {
 									<Button type = "submit" fullWidth variant = "outlined" color = "primary" size = "large" disabled = {tagsToRemove.trim().length === 0}>Remove Tags</Button>
 								</form>
 							</Paper>
-						</Box> :
-						<Box mx = {20}>
-							<Paper style={{ padding: 16 }}>
+						</Container> :
+						<Container align = "center" maxWidth = "md">
+							<Paper style={{ padding: 16 }} className = {classes.listBackground}  >
 								<form className={classes.root} noValidate autoComplete="off" onSubmit={addTags}>
 									<TextField fullWidth id="standard-basic-tags" name = "newTags" label="sweet, sour, amazing" onChange={onChange} value={newTags} />
 									<br></br>
@@ -595,18 +594,18 @@ export default function RecipePage(props) {
 									<Button type = "submit" fullWidth variant = "outlined" color = "primary" size = "large" disabled = {newTags.trim().length === 0}>Add Tags</Button>
 								</form>
 							</Paper>
-						</Box>
+						</Container>
 				}
 				<br></br>
 				<br></br>
-				<Box mx = {20}>
+				<Container align = "center" maxWidth = "md">
 					<Button onClick = {favorited ? onUnfavorite : onFavorite} fullWidth variant = "contained" color = "primary" size = "large">{favorited ? "unfavorite" : "favorite"}</Button>
-				</Box>
+				</Container>
 				<br></br>
 				<br></br>
-				<Box mx = {20}>
+				<Container align = "center" maxWidth = "md">
 					<Button  onClick = {queued ? onUnqueue : onQueue} fullWidth variant = "contained" color = "primary" size = "large">{queued ? "unqueue" : "queue"}</Button>
-				</Box>
+				</Container>
 				<br></br>
 				<br></br>
 			</div>
@@ -614,7 +613,7 @@ export default function RecipePage(props) {
 			}
 
 			{(currentUser && recipe.author.id === currentUser.id) &&  
-				<Container align="center">
+				<Container align = "center" maxWidth = "md">
 					<br></br>
 					<br></br>
 					<Typography variant="h5" className={classes.subheading}>You cannot express your opinions on this recipe because you created it.</Typography>
