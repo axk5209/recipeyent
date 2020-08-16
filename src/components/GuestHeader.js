@@ -7,17 +7,18 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import MenuIcon from '@material-ui/icons/Menu';
-import Container from '@material-ui/core/Container';
-
 import {
 	Link
 } from "react-router-dom"
+import LinkTag from '@material-ui/core/Link';
+
+var HeaderLogo = require('./headerLogo.png')
+
 const useStyles = makeStyles((theme) => ({
 	root: {
 		flexGrow: 1,
 	},
 	menuButton: {
-		marginRight: theme.spacing(2),
 	},
 	title: {
 		flexGrow: 1,
@@ -27,19 +28,20 @@ const useStyles = makeStyles((theme) => ({
 
 export default function GuestHeader(props) {
 	const classes = useStyles();
-
 	return (
 		<div className={classes.root}>
-			<AppBar position="static">
+			<AppBar position="static" >
 				<CssBaseline />
+
 				<Toolbar>
-					<Container align = "left" maxWidth = "sm">
-						<Typography variant="h4" className={classes.title} component = {Link} to = "/home" maxWidth = "sm">
-								Recipeyent
-						</Typography>
-					</Container>
-					&nbsp;
-				{props.children}
+					<LinkTag component={Link} to="/home">
+						<img src={HeaderLogo} style ={{maxWidth: "60px"}}/>
+					</LinkTag>
+					<Typography variant="h4" className={classes.title}>
+						ecipeyent
+					</Typography>
+				  &nbsp;
+					{props.children}
 				</Toolbar>
 			</AppBar>
 		</div>
