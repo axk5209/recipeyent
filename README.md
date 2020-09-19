@@ -1,7 +1,7 @@
 # Recipeyent Frontend
 ### *Frontend of fun recipe-sharing website. Built with React JS (Redux, Hooks, Material UI)*
 
-#### Users can create, review, and save different recipes. They can also follow other users to prioritize their content
+#### Users can create, review, and save different recipes and follow other users' content.
 
 #### The src folder contains code for different pages in the platform: the Login Screen, Landing Page, Recipe Creation Form, User Dashboard, etc.
 
