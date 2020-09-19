@@ -3,7 +3,7 @@
 
 #### Users can create, review, and save different recipes. They can also follow other users to prioritize their content
 
-#### The src folder contains code for different platform pages: Login Screen, Landing Page, Recipe Creation Form, etc.
+#### The src folder contains code for different pages in the platform: the Login Screen, Landing Page, Recipe Creation Form, User Dashboard, etc.
 
 ![Image of Landing Page](https://github.com/axk5209/recipeyent/blob/master/landingPage.png)
 
